@@ -32,7 +32,12 @@ enrolldata <- datafile |>
 
 ```
 
-```{r, echo=TRUE}
+```{r}
+#| echo: TRUE
+#| layout-ncol: 1
+#| fig-cap: 
+#|   - "Default Settings"
+#|   - "Custom Settings"
 
 enrolldata$sex <- ordered(enrolldata$sex, levels= c('F', 'M', 'O'), labels=c('Female', 'Male', 'Other'))
 
