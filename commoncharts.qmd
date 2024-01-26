@@ -52,15 +52,17 @@ plot(sexenroll1)
 ```
 
 ```{r}
-#| echo: TRUE
-#| layout-ncol: 1
-#| fig-cap: 
-#|   - "Custom Settings"
-#| code-fold: true
+#| code-fold: false
 #| code-summary: "Display code"
 #| code-link: true
 #| code-block-bg: true
 #| code-block-border-left: "#31BAE9"
+#| code-overflow: wrap
+#| echo: TRUE
+#| layout-ncol: 1
+#| fig-cap: 
+#|   - "Custom Settings"
+
 
 sexenroll2 = ggplot(data=sextotal, aes(x=sex, y=count, fill=sex)) + 
   geom_bar(stat="identity", alpha=0.8, color="black" )+
