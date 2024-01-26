@@ -3,16 +3,16 @@ project:
   output-dir: docs
 
 website:
-  title: "vizgallery"
+  title: "IU BHDS RMarkdown and Visualization Guide"
   navbar:
     left:
       - href: index.qmd
         text: Home
-      - about.qmd
+      - commoncharts.qmd
 
 format:
   html:
-    theme: cosmo
+    theme: darkly
     css: styles.css
     toc: true
 
