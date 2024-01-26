@@ -2,3 +2,63 @@
 title: "Common Charts"
 ---
 
+
+```{r setup, include=FALSE}
+windowsFonts()
+# Needed Package names
+packages <- c("tidyverse", "kableExtra", "ggplot2", "scales", "RColorBrewer", "zoo", "readxl" , "rmarkdown", "htmltools")
+# Install packages not yet installed
+installed_packages <- packages %in% rownames(installed.packages())
+if (any(installed_packages == FALSE)) {
+  install.packages(packages[!installed_packages])
+}
+# Attach Packages
+invisible(lapply(packages, library, character.only = TRUE))
+
+#Plot elements
+# gg_text = theme(text = element_text(family = "Times"))
+gg_scaley = scale_y_continuous(breaks = pretty_breaks())
+gg_scalexd = scale_x_date(breaks = pretty_breaks())
+```
+
+```{r, include = F}
+datafile <- read_xlsx("I:/Projects/InfoEng/QuartoRMD/vizgallery/EnrollReport_Input_Example.xlsx",  guess_max = 1000)
+
+enrolldata <- datafile |> 
+    mutate(enrol_d=as.Date(enrol_d)) |> 
+    mutate(sex=toupper(sex)) |>  
+    mutate(age=as.numeric(floor(age))) |> 
+    mutate(enrol_w=floor_date(as.Date(enrol_d), "week")) 
+
+```
+
+```{r, echo=TRUE}
+
+enrolldata$sex <- ordered(enrolldata$sex, levels= c('F', 'M', 'O'), labels=c('Female', 'Male', 'Other'))
+
+sextotal <- enrolldata |> 
+  group_by(sex) |> 
+  summarize(count=n())
+
+
+sexenroll1 = ggplot(data=sextotal, aes(x=sex, y=count, fill=sex)) + 
+  geom_bar(stat="identity", alpha=0.8, color="black" )
+
+plot(sexenroll1)
+```
+
+```{r, echo=TRUE}
+sexenroll2 = ggplot(data=sextotal, aes(x=sex, y=count, fill=sex)) + 
+  geom_bar(stat="identity", alpha=0.8, color="black" )+
+  coord_flip()+
+  scale_fill_brewer(palette="Dark2")+
+  xlab("") + ylab("Number Enrolled") + 
+  labs(title = "Enrollment by Sex") +
+  theme_bw()+
+  theme(plot.title = element_text(hjust = 0), legend.position="bottom", legend.title = element_blank(), 
+        plot.subtitle = element_text(size=9), plot.caption = element_text(hjust=0)) 
+
+plot(sexenroll2)
+
+```
+
