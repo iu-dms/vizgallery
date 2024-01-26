@@ -4,9 +4,9 @@ title: "Common Charts"
 
 
 ```{r setup, include=FALSE}
-windowsFonts()
+
 # Needed Package names
-packages <- c("tidyverse", "kableExtra", "ggplot2", "scales", "RColorBrewer", "zoo", "readxl" , "rmarkdown", "htmltools")
+packages <- c("tidyverse", "kableExtra", "ggplot2", "scales", "RColorBrewer", "zoo", "readxl" , "rmarkdown", "htmltools", "palmerpenguins")
 # Install packages not yet installed
 installed_packages <- packages %in% rownames(installed.packages())
 if (any(installed_packages == FALSE)) {
@@ -37,11 +37,10 @@ enrolldata <- datafile |>
 #| layout-ncol: 1
 #| fig-cap: 
 #|   - "Default Settings"
-#|   - "Custom Settings"
+#| code-fold: true
+#| code-summary: "Display code"
 
-enrolldata$sex <- ordered(enrolldata$sex, levels= c('F', 'M', 'O'), labels=c('Female', 'Male', 'Other'))
-
-sextotal <- enrolldata |> 
+sextotal <- penguins |> 
   group_by(sex) |> 
   summarize(count=n())
 
@@ -52,14 +51,24 @@ sexenroll1 = ggplot(data=sextotal, aes(x=sex, y=count, fill=sex)) +
 plot(sexenroll1)
 ```
 
-```{r, echo=TRUE}
+```{r}
+#| echo: TRUE
+#| layout-ncol: 1
+#| fig-cap: 
+#|   - "Custom Settings"
+#| code-fold: true
+#| code-summary: "Display code"
+#| code-link: true
+#| code-block-bg: true
+#| code-block-border-left: "#31BAE9"
+
 sexenroll2 = ggplot(data=sextotal, aes(x=sex, y=count, fill=sex)) + 
   geom_bar(stat="identity", alpha=0.8, color="black" )+
   coord_flip()+
-  scale_fill_brewer(palette="Dark2")+
-  xlab("") + ylab("Number Enrolled") + 
+  scale_fill_brewer(palette="BuPu")+
+  xlab("") + ylab("Number") + 
   labs(title = "Enrollment by Sex") +
-  theme_bw()+
+  theme_classic()+
   theme(plot.title = element_text(hjust = 0), legend.position="bottom", legend.title = element_blank(), 
         plot.subtitle = element_text(size=9), plot.caption = element_text(hjust=0)) 
 
