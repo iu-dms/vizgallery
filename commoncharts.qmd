@@ -26,6 +26,8 @@ invisible(lapply(packages, library, character.only = TRUE))
 # gg_text = theme(text = element_text(family = "Times"))
 gg_scaley = scale_y_continuous(breaks = pretty_breaks())
 gg_scalexd = scale_x_date(breaks = pretty_breaks())
+
+pp <- penguins
 ```
 
 ```{r, include = F}
@@ -40,12 +42,10 @@ enrolldata <- datafile |>
 ```
 
 ```{r}
-#| echo: TRUE
-#| layout-ncol: 1
-#| fig-cap: 
-#|   - "Default Settings"
 #| code-fold: true
 #| code-summary: "Display code"
+
+
 
 sextotal <- penguins |> 
   group_by(sex) |> 
@@ -65,7 +65,6 @@ plot(sexenroll1)
 #| code-block-bg: true
 #| code-block-border-left: "#31BAE9"
 #| code-overflow: wrap
-#| echo: TRUE
 #| layout-ncol: 1
 #| fig-cap: 
 #|   - "Custom Settings"
@@ -87,10 +86,23 @@ plot(sexenroll2)
 
 
 ```{r, raincloud}
+#| code-fold: true
+#| code-summary: "Display code"
+#| code-link: true
+#| code-block-bg: true
+#| code-block-border-left: "#31BAE9"
+#| code-overflow: wrap
+#| layout-ncol: 1
+#| fig-cap: 
+#|   - "Custom Settings"
 
+
+new_labels <- c("Adelie"="ADELIE",
+                      "Gentoo"="GENTOO",
+                      "Chinstrap"="CHINSTRAP")
 
 rcplot <- function(score, titletext, captext){
-  ggplot(scales_all, aes(x=project, y=score)) + 
+  ggplot(pp, aes(x=species, y=bill_length_mm)) + 
     ggdist::stat_halfeye(
       fill=BLUE_50,
       adjust = .5, 
@@ -109,7 +121,7 @@ rcplot <- function(score, titletext, captext){
     color="black") +
   labs(x='', y='', title = titletext, subtitle = captext)+
   # coord_flip()+
-    facet_grid(cols=vars(redcap_event_name), scales="free_x", labeller = labeller(redcap_event_name=new_event_labels))+
+    facet_grid(cols=vars(species), scales="free_x", labeller = labeller(species=new_labels))+
   theme_classic()+
   gg_text +
   theme(legend.position="none", legend.title = element_blank(), 
@@ -120,6 +132,6 @@ rcplot <- function(score, titletext, captext){
 }
 
 plot <- rcplot(scales_all$mspss_score,
-              paste0("MSPSS Score (n=", as.numeric(length(na.omit(scales_all$mspss_score))) , ")"),
-                "Multidimensional Scale of Perceived Social Support\nMean scores reported; Higher score = Greater Perceived Support")
+              paste0("Bill Length (n=", as.numeric(length(na.omit(pp$bill_length_mm))) , ")"),
+                "Bill Length in mm by Species")
 
