@@ -85,3 +85,41 @@ plot(sexenroll2)
 
 ```
 
+
+```{r, raincloud}
+
+
+rcplot <- function(score, titletext, captext){
+  ggplot(scales_all, aes(x=project, y=score)) + 
+    ggdist::stat_halfeye(
+      fill=BLUE_50,
+      adjust = .5, 
+      width = 1.0, 
+      .width = 0, 
+      justification = -0.3, 
+      point_colour = NA,
+      alpha=0.6)+
+  geom_boxplot(width=0.4, color="black", outlier.shape = NA, alpha=.9, fill=BLUE_50) +
+  ggbeeswarm::geom_quasirandom(
+    shape=21,                           
+    size = 1,
+    alpha = 1,
+    width = .2,
+    bg=BLUE_99,
+    color="black") +
+  labs(x='', y='', title = titletext, subtitle = captext)+
+  # coord_flip()+
+    facet_grid(cols=vars(redcap_event_name), scales="free_x", labeller = labeller(redcap_event_name=new_event_labels))+
+  theme_classic()+
+  gg_text +
+  theme(legend.position="none", legend.title = element_blank(), 
+        plot.title = element_text(size=16, face="bold"),
+        plot.subtitle = element_text(size=12, lineheight = 0.5 ), axis.text.y=element_text(size=14, face="bold"), axis.text.x=element_blank(),
+        axis.ticks.y=element_blank(), axis.title.x=element_text(size=14, face="bold"))
+
+}
+
+plot <- rcplot(scales_all$mspss_score,
+              paste0("MSPSS Score (n=", as.numeric(length(na.omit(scales_all$mspss_score))) , ")"),
+                "Multidimensional Scale of Perceived Social Support\nMean scores reported; Higher score = Greater Perceived Support")
+
