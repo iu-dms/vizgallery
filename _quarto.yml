@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 website:
-  title: "IU BHDS RMarkdown and Visualization Guide"
+  title: "IU BHDS Visualization Gallery"
   navbar:
     left:
       - href: index.qmd
