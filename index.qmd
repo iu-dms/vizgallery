@@ -1,5 +1,5 @@
 ---
-title: "BHDS Data Management Resources"
+title: "BHDS Data Management Visualization Guide"
 ---
 ```{=html}
 <meta http-equiv='cache-control' content='no-cache'> 

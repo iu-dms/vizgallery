@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 
-<meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.549">
+<head>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta charset="utf-8" />
+<meta name="generator" content="quarto-1.4.549" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
 
 
-<title>IU BHDS Visualization Gallery - BHDS Data Management Visualization Guide</title>
+<title>IU BHDS Visualization Gallery – Enrollment Tracking</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -56,25 +58,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </style>
 
-
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<!-- htmldependencies:E3FAD763 -->
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -104,28 +88,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
 
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css" />
 </head>
 
-<body class="nav-fixed">
+<body>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="/index.html">
     <span class="navbar-title">IU BHDS Visualization Gallery</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+  aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation"
+  onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="/index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="dropdown-header">
@@ -143,20 +129,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
-  </ul>
-</nav>
+        <div id="quarto-toc-target"></div>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">BHDS Data Management Visualization Guide</h1>
+<h1 class="title">Enrollment Tracking</h1>
 </div>
 
 
@@ -173,25 +153,60 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<meta http-equiv="cache-control" content="no-cache"> 
-<meta http-equiv="expires" content="0"> 
-<meta http-equiv="pragma" content="no-cache">
-<section id="introduction" class="level3">
-<h3 class="anchored" data-anchor-id="introduction">Introduction</h3>
-<p>This website is meant to be a resource for users interested in learning more about developing reusable reports using RMarkdown. This site also contains code snippets to get users started with a variety of data visualizations commonly used in our Department.</p>
-<p>To learn more about Quarto websites visit <a href="https://quarto.org/docs/websites" class="uri">https://quarto.org/docs/websites</a>.</p>
+<p>Here is an example of a basic bar plot with</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2</code></pre>
+<details class="code-fold">
+<summary>Display code</summary>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>sextotal <span class="ot">&lt;-</span> enrolldata <span class="sc">|&gt;</span> </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(sex) <span class="sc">|&gt;</span> </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">count=</span><span class="fu">n</span>())</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>sexenroll1 <span class="ot">=</span> <span class="fu">ggplot</span>(<span class="at">data=</span>sextotal, <span class="fu">aes</span>(<span class="at">x=</span>sex, <span class="at">y=</span>count, <span class="at">fill=</span>sex)) <span class="sc">+</span> </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">&quot;identity&quot;</span>, <span class="at">alpha=</span><span class="fl">0.8</span>, <span class="at">color=</span><span class="st">&quot;black&quot;</span> )</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sexenroll1)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img src="enrollment_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672" /></p>
+</figure>
 </div>
 </div>
-
-
-</section>
+</div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r cell-code code-overflow-wrap"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>sexenroll2 <span class="ot">=</span> <span class="fu">ggplot</span>(<span class="at">data=</span>sextotal, <span class="fu">aes</span>(<span class="at">x=</span>sex, <span class="at">y=</span>count, <span class="at">fill=</span>sex)) <span class="sc">+</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">&quot;identity&quot;</span>, <span class="at">alpha=</span><span class="fl">0.8</span>, <span class="at">color=</span><span class="st">&quot;black&quot;</span> )<span class="sc">+</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()<span class="sc">+</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette=</span><span class="st">&quot;BuPu&quot;</span>)<span class="sc">+</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;Number&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Enrollment by Sex&quot;</span>) <span class="sc">+</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="dv">0</span>), <span class="at">legend.position=</span><span class="st">&quot;bottom&quot;</span>, <span class="at">legend.title =</span> <span class="fu">element_blank</span>(), </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">9</span>), <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">hjust=</span><span class="dv">0</span>)) </span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sexenroll2)</span></code></pre></div>
+<div class="cell quarto-layout-panel" data-code-block-border-left="#31BAE9" data-code-link="true" data-layout-ncol="1" data-code-block-bg="true">
+<div class="quarto-layout-row">
+<details class="code-fold">
+<summary>Display code</summary>
+</details>
+</div>
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img src="enrollment_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672" /></p>
+</div>
+</div>
+</div>
+<div id="quarto-navigation-envelope" class="hidden">
+<p><span class="hidden" data-render-id="quarto-int-sidebar-title">IU BHDS Visualization Gallery</span> <span class="hidden" data-render-id="quarto-int-navbar-title">IU BHDS Visualization Gallery</span> <span class="hidden" data-render-id="quarto-int-navbar:Home">Home</span> <span class="hidden" data-render-id="quarto-int-navbar:/index.html">/index.html</span> <span class="hidden" data-render-id="quarto-int-navbar:commoncharts.qmd">commoncharts.qmd</span></p>
+</div>
+<div id="quarto-meta-markdown" class="hidden">
+<p><span class="hidden" data-render-id="quarto-metatitle">IU BHDS Visualization Gallery - Enrollment Tracking</span> <span class="hidden" data-render-id="quarto-twittercardtitle">IU BHDS Visualization Gallery - Enrollment Tracking</span> <span class="hidden" data-render-id="quarto-ogcardtitle">IU BHDS Visualization Gallery - Enrollment Tracking</span> <span class="hidden" data-render-id="quarto-metasitename">IU BHDS Visualization Gallery</span> <span class="hidden" data-render-id="quarto-twittercarddesc"></span> <span class="hidden" data-render-id="quarto-ogcardddesc"></span></p>
+</div>
 
 </main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+<script id = "quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -724,7 +739,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 </div> <!-- /content -->
 
+</body>
 
-
-
-</body></html>
+</html>

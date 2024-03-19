@@ -1,0 +1,85 @@
+---
+title: "Raincloud Plots"
+format:
+  html:
+    theme: 
+      light: flatly
+      dark: darkly
+    css: styles.css
+    toc: true
+---
+
+
+```{r setup, include=FALSE}
+
+# Needed Package names
+packages <- c("tidyverse", "kableExtra", "ggplot2", "scales", "RColorBrewer", "zoo", "readxl" , "rmarkdown", "htmltools", "palmerpenguins")
+# Install packages not yet installed
+installed_packages <- packages %in% rownames(installed.packages())
+if (any(installed_packages == FALSE)) {
+  install.packages(packages[!installed_packages])
+}
+# Attach Packages
+invisible(lapply(packages, library, character.only = TRUE))
+
+#Plot elements
+# gg_text = theme(text = element_text(family = "Times"))
+gg_scaley = scale_y_continuous(breaks = pretty_breaks())
+gg_scalexd = scale_x_date(breaks = pretty_breaks())
+
+pp <- penguins
+```
+
+
+```{r}
+#| code-fold: true
+#| code-summary: "Display code"
+#| code-link: true
+#| code-block-bg: true
+#| code-block-border-left: "#31BAE9"
+#| code-overflow: wrap
+#| layout-ncol: 1
+
+
+
+new_labels <- c("Adelie"="ADELIE",
+                      "Gentoo"="GENTOO",
+                      "Chinstrap"="CHINSTRAP")
+
+rcplot <- function(score, titletext, captext){
+  ggplot(pp, aes(x=species, y=bill_length_mm)) + 
+    ggdist::stat_halfeye(
+      fill=BLUE_50,
+      adjust = .5, 
+      width = 1.0, 
+      .width = 0, 
+      justification = -0.3, 
+      point_colour = NA,
+      alpha=0.6)+
+  geom_boxplot(width=0.4, color="black", outlier.shape = NA, alpha=.9, fill=BLUE_50) +
+  ggbeeswarm::geom_quasirandom(
+    shape=21,                           
+    size = 1,
+    alpha = 1,
+    width = .2,
+    bg=BLUE_99,
+    color="black") +
+  labs(x='', y='', title = titletext, subtitle = captext)+
+  # coord_flip()+
+    facet_grid(cols=vars(species), scales="free_x", labeller = labeller(species=new_labels))+
+  theme_classic()+
+  gg_text +
+  theme(legend.position="none", legend.title = element_blank(), 
+        plot.title = element_text(size=16, face="bold"),
+        plot.subtitle = element_text(size=12, lineheight = 0.5 ), axis.text.y=element_text(size=14, face="bold"), axis.text.x=element_blank(),
+        axis.ticks.y=element_blank(), axis.title.x=element_text(size=14, face="bold"))
+
+}
+
+plot <- rcplot(scales_all$mspss_score,
+              paste0("Bill Length (n=", as.numeric(length(na.omit(pp$bill_length_mm))) , ")"),
+                "Bill Length in mm by Species")
+
+plot
+
+
