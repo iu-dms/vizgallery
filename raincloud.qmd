@@ -26,6 +26,15 @@ invisible(lapply(packages, library, character.only = TRUE))
 # gg_text = theme(text = element_text(family = "Times"))
 gg_scaley = scale_y_continuous(breaks = pretty_breaks())
 gg_scalexd = scale_x_date(breaks = pretty_breaks())
+gg_text = theme(text = element_text(family = "Arial"))
+
+BLUE_0 <- "#dbe3ed" 
+BLUE_25 <- "#b3c4e0"
+BLUE_50 <-"#788dae"  
+BLUE_75 <- "#5a7296"
+BLUE_99 <-  "#3c567d" 
+BLUE_100 <-  "#334b6e" 
+NAGRAY <- "#cccccc" # GRAY for NA values
 
 pp <- penguins
 ```
@@ -81,5 +90,5 @@ plot <- rcplot(scales_all$mspss_score,
                 "Bill Length in mm by Species")
 
 plot
-
+```
 
