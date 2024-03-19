@@ -26,7 +26,7 @@ invisible(lapply(packages, library, character.only = TRUE))
 # gg_text = theme(text = element_text(family = "Times"))
 gg_scaley = scale_y_continuous(breaks = pretty_breaks())
 gg_scalexd = scale_x_date(breaks = pretty_breaks())
-gg_text = theme(text = element_text(family = "Arial"))
+gg_text = theme(text = element_text(family = "TT Arial"))
 
 BLUE_0 <- "#dbe3ed" 
 BLUE_25 <- "#b3c4e0"
@@ -37,6 +37,7 @@ BLUE_100 <-  "#334b6e"
 NAGRAY <- "#cccccc" # GRAY for NA values
 
 pp <- penguins
+
 ```
 
 

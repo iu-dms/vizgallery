@@ -8,7 +8,8 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - commoncharts.qmd
+      - enrollment.qmd
+      - raincloud.qmd
 
 format:
   html:
