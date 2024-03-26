@@ -9,11 +9,39 @@ format:
     toc: true
 ---
 
+### Background
 
-```{r setup, include=FALSE}
+Often in our projects there will be a potential need to track study recruitment, and provide some descriptive information on the study cohort. Below are examples of some of the ways this can be done easily in R. 
+
+### Data Structure
+
+To replicate this plot, you would need to re-structure your data into the following format:
+
+### Required Variables
+Variable	| Format	| Description
+----------|---------|------------
+id	|Numeric or Alphanumeric	|Unique, anonymous, patient identifier. This can be in any project-specific format. _Required in all rows_
+enrol_d	|Date (yyyy-mm-dd)	|Date of enrollment. Must be in specified format.  _Required in all rows_
+target	|Integer	|Study enrollment target. _Should be the same value in every row._
+start_d	|Date (yyyy-mm-dd)	|Start date of study enrollment. _Should be the same value in every row._
+end_d	|Date (yyyy-mm-dd)	|End date of study enrollment. _Should be the same value in every row._
+age	|Numeric (integer or decimal)	|_Leave blank if unknown_
+sex	|M/F/O	|Biological sex at birth of patient. _Leave blank if unknown._ M, Male F, Female O, Other
+
+### Optional Variables
+Note: Although not used in any examples below, summary information will often be needed on racial distribution, and potentially on different groups/arms of your study.
+
+Variable	| Format	| Description
+----------|---------|------------
+race	|Numeric	|Follow standard coding from NIH. _Leave blank if unknown._ 1, American Indian or Alaska Native 2, Asian 3, Black or African American 5, Native Hawaiian or Other Pacific Islander 6, Unknown 7, White 8, Multi-racial 9, Other
+group	|Character or numeric (integer)	|To stratify overall report by group or generate individual group reports. This could be treatment versus control, multiple study sites, etc.
+
+```{r setup}
+#| warning: false
+#| include: false
 
 # Needed Package names
-packages <- c("tidyverse", "kableExtra", "ggplot2", "scales", "RColorBrewer", "zoo", "readxl" , "rmarkdown", "htmltools", "palmerpenguins")
+packages <- c("tidyverse", "ggplot2", "scales", "readxl", "RColorBrewer" )
 # Install packages not yet installed
 installed_packages <- packages %in% rownames(installed.packages())
 if (any(installed_packages == FALSE)) {
@@ -22,67 +50,129 @@ if (any(installed_packages == FALSE)) {
 # Attach Packages
 invisible(lapply(packages, library, character.only = TRUE))
 
-#Plot elements
-# gg_text = theme(text = element_text(family = "Times"))
-gg_scaley = scale_y_continuous(breaks = pretty_breaks())
-gg_scalexd = scale_x_date(breaks = pretty_breaks())
-
-pp <- penguins
-```
-
-```{r, include = F}
-datafile <- read_xlsx("I:/Projects/InfoEng/QuartoRMD/vizgallery/EnrollReport_Input_Example.xlsx",  guess_max = 1000)
-
-enrolldata <- datafile |> 
-    mutate(enrol_d=as.Date(enrol_d)) |> 
-    mutate(sex=toupper(sex)) |>  
-    mutate(age=as.numeric(floor(age))) |> 
-    mutate(enrol_w=floor_date(as.Date(enrol_d), "week")) 
 
 ```
 
-Here is an example of a basic bar plot with 
+### Recruitment Plot
+
+To track recruitment, specifically against a target, see below for an example. There are plenty of options to provide this information to your desired audience, this is just one potential option. This example creates a plot that includes longitudinal tracking of cumulative recruitment against a target, calculates a estimated metric of recruitment needed to meet target by the end of recruitment, and provides bars to show trend in weekly recruitment. Get creative and use this as a template to style a plot that best fits your study!
+
 ```{r}
-#| code-fold: true
-#| code-summary: "Display code"
+#| code-fold: false
+#| code-summary: "Display/Hide plot code"
+#| warning: false
 
-
-
-sextotal <- enrolldata |> 
-  group_by(sex) |> 
-  summarize(count=n())
-
-
-sexenroll1 = ggplot(data=sextotal, aes(x=sex, y=count, fill=sex)) + 
-  geom_bar(stat="identity", alpha=0.8, color="black" )
-
-plot(sexenroll1)
+df <- read_xlsx("EnrollReport_Input_Example.xlsx",  guess_max = 1000)
+head(df)
 ```
 
 ```{r}
-#| code-fold: true
-#| code-summary: "Display code"
-#| code-link: true
-#| code-block-bg: true
-#| code-block-border-left: "#31BAE9"
-#| code-overflow: wrap
-#| layout-ncol: 1
+#| code-fold: show
+#| code-summary: "Display/Hide plot code"
+#| warning: false
+
+#format data as necessary
+enrolldata <- df  |>  
+  mutate(enrol_d=as.Date(enrol_d)) |>
+  mutate(sex=toupper(sex)) |> 
+  mutate(age=as.numeric(floor(age))) |> 
+  mutate(enrol_w=floor_date(as.Date(enrol_d), "week")) |> 
+  mutate(start_d=as.Date(start_d)) |> 
+  mutate(end_d=as.Date(end_d)) |> 
+  mutate(interval=interval(start_d, end_d) ) |> 
+  mutate(avg= max(target) / time_length(interval, unit="days") ) |> 
+  mutate(interval2=interval(max(as.Date(enrol_d)), as.Date(end_d)) ) |> 
+  mutate(weeksleft=time_length(interval2, unit="weeks") ) |>
+  select(-c(interval, interval2))
+  
+#calculate total number of IDs
+totalids <- as.numeric(n_distinct(enrolldata$id))
+
+#calculate count per week and cumulative sum
+count <- enrolldata |>
+  group_by(enrol_w) |>
+  summarise(count = n()) 
+cumsum <- count |>
+    summarize(cumsum = cumsum(count)) 
+
+totenrol <- cbind(count, cumsum)
+
+#calculate date range and the recruitment metric
+daterange <- enrolldata |> 
+    complete(enrol_d= seq.Date(min(start_d), max(end_d), by="day")) |> 
+    mutate(avg=max(enrolldata$avg)) |> 
+    group_by(enrol_d) |> 
+    summarize(avg=max(avg)) |> 
+    mutate(cumavg=cumsum(avg))
+
+goalavg <- round( ( as.numeric(max(enrolldata$target)) - as.numeric(max(cumsum$cumsum, na.rm =T)) ) /
+                    max(enrolldata$weeksleft), 1)
+
+accent1 <- RColorBrewer::brewer.pal(5, "Dark2")
+
+plot <-  ggplot() + 
+  geom_line(data=totenrol, aes(x=enrol_w, y=cumsum), linetype="solid", color=accent1[4]  )+ 
+  geom_line(data=daterange, aes(x=enrol_d, y=cumavg), linetype="dashed")+
+  geom_point(data=totenrol, aes(x=enrol_w, y=cumsum), size = 1.5, color=accent1[4]) +
+  geom_bar(data=totenrol, stat="identity",  fill="grey50", alpha=0.8, color="black", aes(x=enrol_w, y=count))+
+  scale_x_date(date_labels="%b-%y", breaks=pretty_breaks())+
+  scale_y_continuous(breaks = pretty_breaks())+
+  xlab("Enrollment  Date") + 
+  ylab("Number Enrolled") + 
+  labs(title = paste0("Overall Weekly Enrollment Actual vs. Target (N=",totalids, ")" ), 
+       subtitle = paste0("Note: Based on data available, an average of ", goalavg, " patients need to be recruited per week to meet enrollment target.") ) +
+  theme_minimal()+
+  theme(plot.title = element_text(hjust = 0), 
+        legend.position="none", 
+        legend.title = element_blank(),
+        plot.subtitle = element_text(size=9), 
+        plot.caption = element_text(hjust=0)) 
+
+plot
+
+```
+
+### Population Pyramid
+
+Many studies recruit based on some weighting schema, often based on age and sex. To quickly view recruitment metrics across 2 characteristics such as these, try this visulaization often referred to as a "population pyramid" or "age-sex pyramid". There are packages that produce these plots quickly, but using ggplot2 allows for better customization, if you like that sort of thing.
 
 
+```{r}
+#| code-fold: show
+#| code-summary: "Display/Hide plot code"
+#| warning: false
 
-sexenroll2 = ggplot(data=sextotal, aes(x=sex, y=count, fill=sex)) + 
-  geom_bar(stat="identity", alpha=0.8, color="black" )+
+enrolldata$sex <- ordered(enrolldata$sex, levels= c('F', 'M', 'O'), labels=c('Female', 'Male', 'Other'))
+
+sexdist <- enrolldata %>% 
+  filter(!is.na(age)) %>% 
+  mutate(agebin = cut(age, breaks = c(0, 10, 20, 30, 40, 50, 60, 70),  
+                       c("0-10", "11-20", "21-30", "31-40", "41-50", "51-60", "61-70" ))) |> 
+  filter(sex=="Male" | sex=="Female") %>% 
+  group_by(sex, agebin) %>% 
+  summarise(count=n()) %>% 
+  mutate(count = ifelse(sex == "Female",count, -1*count)) 
+
+breaks_values <- pretty(-max(sexdist$count):max(sexdist$count))
+
+sexhist <- sexdist %>%
+  ggplot(aes(x = agebin, y = count, fill = sex))+
+  geom_bar(stat = "identity", color="black", alpha=0.75)+
+  geom_text(aes(label=abs(count)), position=position_stack(vjust=0.5), color="black",size=3)+
   coord_flip()+
-  scale_fill_brewer(palette="BuPu")+
-  xlab("") + ylab("Number") + 
-  labs(title = "Enrollment by Sex") +
-  theme_classic()+
-  theme(plot.title = element_text(hjust = 0), legend.position="bottom", legend.title = element_blank(), 
+  scale_y_continuous(limits = c(-max(sexdist$count),max(sexdist$count)),
+                     breaks = breaks_values,
+                     labels = abs(breaks_values) )+
+  geom_hline(yintercept = 0)+
+  scale_fill_brewer(palette="Dark2")+
+  xlab("Age (5 year bin)") + ylab("Number Enrolled")+
+  labs(title = "Enrollment by Sex and Age", subtitle="Note: Includes Male and Female Only") +
+  theme_minimal()+
+  theme(plot.title = element_text(hjust = 0), legend.position="right", legend.title = element_blank(), 
         plot.subtitle = element_text(size=9), plot.caption = element_text(hjust=0)) 
 
-plot(sexenroll2)
+plot(sexhist)
+
 
 ```
-
-
 

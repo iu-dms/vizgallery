@@ -10,6 +10,18 @@ website:
         text: Home
       - enrollment.qmd
       - raincloud.qmd
+    sidebar:
+    style: "docked"
+    search: true
+    contents:
+      - section: "Templates"
+        contents:
+          - href: enrollment.qmd
+            text: "Enrollemnt"
+          - raincloud.qmd
+      - section: "R Markdown Tips"
+        contents:
+          - RMarkdownTips.qmd
 
 format:
   html:

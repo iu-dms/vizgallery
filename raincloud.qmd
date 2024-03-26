@@ -9,8 +9,12 @@ format:
     toc: true
 ---
 
-### Resources
-Much of the explanation below comes from Cedric Scherer, a visualization and design expert known for many things, including his work with ggplot2. Find his work here: <https://www.cedricscherer.com/>, and his blog on raincloud plots here: <https://www.cedricscherer.com/2021/06/06/visualizing-distributions-with-raincloud-plots-and-how-to-create-them-with-ggplot2/#back1>
+::: {.callout-tip}
+## Resources
+
+Much of the content below comes from Cedric Scherer, a visualization and design expert known for many things, including his work with ggplot2. Find his work here: <https://www.cedricscherer.com/>, and his blog on raincloud plots here: <https://www.cedricscherer.com/2021/06/06/visualizing-distributions-with-raincloud-plots-and-how-to-create-them-with-ggplot2/#back1>
+
+:::
 
 ### Background
 Rain cloud plots were officially introduced in 2019 (<https://wellcomeopenresearch.org/articles/4-63>) as an approach to overcome issues of hiding the true data distribution when plotting in typical charts such as box plots. Instead, raincloud plots combine several chart types to visualize the raw data, the distribution of the data as density, and key summary statistics at the same time.
@@ -60,7 +64,7 @@ ggplot(dummy, aes(x = group, y = value)) +
 ```
 The above plot summarizes the data by group, but does this give a complete picture of the data?
 
-::: {.callout-tip}
+::: {.callout-important}
 ## Box Plot Interpretation
 
 * **Questions:**
@@ -80,11 +84,13 @@ The above plot summarizes the data by group, but does this give a complete pictu
 
 Raincloud plots can be used to visualize raw data, the distribution of the data, and key summary statistics at the same time. These comprise of multiple plots added together, consisting of a halved violin plot, a box plot, and the raw data as some kind of scatter plot.
 
-We'll use 3 distinct elements to make these plots as noted above, leveraging 4 different R packages:
+We'll use 3 distinct elements to make these plots as noted above, leveraging 3 different R packages:
+
 1. ggplot2
 2. ggdist
 3. ggbeeswarm
 
+### Code 
 #### Basic Version
 
 ```{r, rcbasic}
@@ -112,9 +118,9 @@ ggplot(pp, aes(x = species, y = bill_length_mm)) +
     width=.2) 
 
 ```
-The formatting possibilities are endless! Using these separate plots allow maximum flexibility to fit your use case.
+This basic plot gives us much more information, and doesn't look bad at all. However, the formatting possibilities are endless! Using these separate plots allow maximum flexibility to fit your use case.
 
-#### Formatted Version
+#### Addtional Formatting Applied
 ```{r}
 #| code-fold: show
 #| code-summary: "Display code"
@@ -124,11 +130,10 @@ The formatting possibilities are endless! Using these separate plots allow maxim
 #| code-overflow: wrap
 #| warning: false
 
-
-
 new_labels <- c("Adelie"="ADELIE",
                       "Gentoo"="GENTOO",
                       "Chinstrap"="CHINSTRAP")
+
 pal <- c("#FF8C00", "#A034F0", "#159090")
 
 rcplot <- function(titletext, captext){
@@ -142,15 +147,20 @@ rcplot <- function(titletext, captext){
       point_colour = NA,
       alpha=0.6)+
     
-  geom_boxplot(width=0.4, color="black", outlier.shape = NA, alpha=.9) +
+  geom_boxplot(width=0.4, color="black", outlier.shape = NA, alpha=.2) +
     
   ggbeeswarm::geom_quasirandom(aes(color=species),
     shape=21,                           
-    size = 1,
+    size = 2,
     alpha = 0.3,
     width = .2) +
     
-  labs(x='', y='Bill Length (mm)', title = titletext, subtitle = captext)+
+  labs(x='', 
+       y='Bill Length (mm)', 
+       title = titletext, 
+       subtitle = captext,
+       caption = "Gorman KB, Williams TD, Fraser WR (2014)"
+       )+
   scale_color_manual(values = pal, guide = "none") +
   scale_fill_manual(values = pal, guide = "none") +
   facet_grid(cols=vars(species), scales="free_x", labeller = labeller(species=new_labels))+
@@ -162,7 +172,6 @@ rcplot <- function(titletext, captext){
         axis.text.y=element_text(size=8, face="plain"), 
         axis.title.y = element_text(size=8, face="plain"), 
         axis.text.x=element_blank(),
-        # axis.ticks.y=element_blank(),
         axis.ticks.x=element_blank())+
   theme(strip.background =element_rect(fill='white'))
 
@@ -177,7 +186,10 @@ plot
 ```
 
 :::{.callout-note}
+## Note
+
 Use caution with color usage, as it is often not necessary. If reports will be consumed electronically, colors like used above would be accepatable. However, in some cases, say if reports will be printed often, using a color scheme of sequential blues (for example) would save sites/project teams ink usage and by most user friendly. See below for a custom blue scale that has worked well when sending to resource limited settings where printed reports are needed.
+
 :::
 
 ```{r bluescale}
