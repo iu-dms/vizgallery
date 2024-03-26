@@ -10,6 +10,7 @@ website:
         text: Home
       - enrollment.qmd
       - raincloud.qmd
+      - consort.qmd
   sidebar:
     style: "docked"
     search: true
