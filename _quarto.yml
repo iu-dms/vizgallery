@@ -1,7 +1,7 @@
 project:
   type: website
   output-dir: docs
-
+  
 website:
   title: "IU BHDS Visualization Gallery"
   navbar:
@@ -10,7 +10,7 @@ website:
         text: Home
       - enrollment.qmd
       - raincloud.qmd
-    sidebar:
+  sidebar:
     style: "docked"
     search: true
     contents:
@@ -22,7 +22,7 @@ website:
       - section: "R Markdown Tips"
         contents:
           - RMarkdownTips.qmd
-
+          
 format:
   html:
     theme: 
