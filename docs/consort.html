@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>IU BHDS Visualization Gallery - BHDS Data Management Visualization Guide</title>
+<title>IU BHDS Visualization Gallery - Consort Diagrams</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -84,11 +118,11 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" rel="" target="" aria-current="page">
+    <a class="nav-link" href="./index.qmd" rel="" target="">
  <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./enrollment.html" rel="" target="">
+    <a class="nav-link active" href="./enrollment.html" rel="" target="" aria-current="page">
  <span class="menu-text">Enrollment Tracking</span></a>
   </li>  
   <li class="nav-item">
@@ -111,7 +145,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">BHDS Data Management Visualization Guide</li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./enrollment.html">Templates</a></li><li class="breadcrumb-item"><a href="./consort.html">Consort Diagrams</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -154,7 +188,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./consort.html" class="sidebar-item-text sidebar-link">
+  <a href="./consort.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Consort Diagrams</span></a>
   </div>
 </li>
@@ -184,7 +218,9 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">Background</a></li>
+  <li><a href="#consort-diagrams---ggconsort" id="toc-consort-diagrams---ggconsort" class="nav-link" data-scroll-target="#consort-diagrams---ggconsort">CONSORT diagrams - ggconsort</a></li>
+  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
   </ul>
 </nav>
     </div>
@@ -193,7 +229,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">BHDS Data Management Visualization Guide</h1>
+<h1 class="title">Consort Diagrams</h1>
 </div>
 
 
@@ -208,13 +244,60 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<meta http-equiv="cache-control" content="no-cache"> 
-<meta http-equiv="expires" content="0"> 
-<meta http-equiv="pragma" content="no-cache">
-<section id="introduction" class="level3">
-<h3 class="anchored" data-anchor-id="introduction">Introduction</h3>
-<p>This website is meant to be a resource for users interested in learning more about data visualization in R, paticularly for use cases that arise in our daily <strong>data management</strong> work. This site will contain code to help users get started with a variety of data visualizations commonly used in our work. While these plots can often be used to distribute summary data to project teams or other external audiences, many of these solutions can also help data managers ensure data quality and alert project staff if any data issues are present.</p>
-<p>For many basic, and some advanced R plots, consider familiarizing yourself with the great R Graph Gallery <a href="https://r-graph-gallery.com/" class="uri">https://r-graph-gallery.com/</a>. Many techniques that will be very beneficial in your work will be illustrated there, and will not be repeated in this resource. This site aims to expand on exisiting R visualization resources and generate templates for our group to leverage within their project work.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Resources
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The ggConsort package was created by Travis Gerke &amp; Garrick Aden-Buie. Find his github instructions for ggconsort here: <a href="https://tgerke.github.io/ggconsort/" class="uri">https://tgerke.github.io/ggconsort/</a>.</p>
+</div>
+</div>
+<section id="background" class="level3">
+<h3 class="anchored" data-anchor-id="background">Background</h3>
+<p>CONSORT (Consolidated Standards of Reporting Trials) <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4520133/" class="uri">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4520133/</a> is a scientific study protocol created to tackle issues that arise from randomized controlled trials (RCTs). There is a “checklist” of categories in the protocol (Title+Abstract, Introduction, Method, Results, Discussion, Other) that is to be included in parts of a published article, and the protocol also includes a flow diagram providing the reader with information on sstudy enrollment and flow. The ggConsort package uses ggplot2 and added functions to create a dynamic and reusable CONSORT diagram.</p>
+</section>
+<section id="consort-diagrams---ggconsort" class="level3">
+<h3 class="anchored" data-anchor-id="consort-diagrams---ggconsort">CONSORT diagrams - ggconsort</h3>
+<p>CONSORT diagrams are used to show enrollment/study progress and flow. They can often be used in regular reporting to study staff, or as final diagrams to show progress of trial phases. The github page for the package has many examples using a sample dataset, trail_data, that comes with the package <a href="https://tgerke.github.io/ggconsort/" class="uri">https://tgerke.github.io/ggconsort/</a>.</p>
+<p>The following packages are necessary:</p>
+<ol type="1">
+<li>ggplot2</li>
+<li>ggconsort</li>
+<li>devtools - used to download package from github repository</li>
+<li>dplyr</li>
+</ol>
+<section id="installation" class="level4">
+<h4 class="anchored" data-anchor-id="installation">Installation</h4>
+<div class="cell">
+<details open="">
+<summary>Display/Hide code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("devtools")</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># devtools::install_github("tgerke/ggconsort")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+</section>
+<section id="examples" class="level3">
+<h3 class="anchored" data-anchor-id="examples">Examples</h3>
+<p>Below is a simple CONSORT diagram from Gerke’s github page.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="consort2.png" class="lightbox img-fluid figure-img"></p>
+<figcaption class="figure-caption">Simple consort diagram from <a href="https://tgerke.github.io/ggconsort" class="uri">https://tgerke.github.io/ggconsort</a></figcaption>
+</figure>
+</div>
+<p>Below is a more complicated CONSORT diagram from a multisite randomized clinical trial, using two strata (site and sex). The diagram is created in the same way as the above - just filtering out into additional groups and creating additional boxes and lines. This is a real CONSORT example from a study in our department - site names and strata have been slightly edited.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="consort1.png" class="lightbox img-fluid figure-img"></p>
+<figcaption class="figure-caption">CONSORT diagram showing two strata (site, sex) and randomization group assignments</figcaption>
+</figure>
+</div>
 
 
 </section>

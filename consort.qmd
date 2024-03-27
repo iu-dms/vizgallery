@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 ---
 title: "Consort Diagrams"
 format:
@@ -65,3 +66,72 @@ Below is a simple CONSORT diagram from Gerke's github page.
 Below is a more complicated CONSORT diagram from a multisite randomized clinical trial, using two strata (site and sex). The diagram is created in the same way as the above - just filtering out into additional groups and creating additional boxes and lines. This is a real CONSORT example from a study in our department - site names and strata have been slightly edited.
 
 ![CONSORT diagram showing two strata (site, sex) and randomization group assignments](consort1.png){.lightbox}
+=======
+---
+title: "Consort Diagrams"
+format:
+  html:
+    theme: 
+      light: flatly
+      dark: darkly
+    css: styles.css
+    toc: true
+---
+
+::: callout-tip
+## Resources
+
+The ggConsort package was created by Travis Gerke & Garrick Aden-Buie. Find his github instructions for ggconsort here: <https://tgerke.github.io/ggconsort/>.
+:::
+
+### Background
+
+CONSORT (Consolidated Standards of Reporting Trials) <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4520133/> is a scientific study protocol created to tackle issues that arise from randomized controlled trials (RCTs). There is a "checklist" of categories in the protocol (Title+Abstract, Introduction, Method, Results, Discussion, Other) that is to be included in parts of a published article, and the protocol also includes a flow diagram providing the reader with information on sstudy enrollment and flow. The ggConsort package uses ggplot2 and added functions to create a dynamic and reusable CONSORT diagram.
+
+```{r setup, include=FALSE}
+
+# Needed Package names
+packages <- c("tidyverse","ggplot2" , "htmltools", "downlit","ggconsort","rmarkdown")
+# Install packages not yet installed
+installed_packages <- packages %in% rownames(installed.packages())
+if (any(installed_packages == FALSE)) {
+  install.packages(packages[!installed_packages])
+}
+# Attach Packages
+invisible(lapply(packages, library, character.only = TRUE))
+
+```
+
+### CONSORT diagrams - ggconsort
+
+CONSORT diagrams are used to show enrollment/study progress and flow. They can often be used in regular reporting to study staff, or as final diagrams to show progress of trial phases. The github page for the package has many examples using a sample dataset, trail_data, that comes with the package <https://tgerke.github.io/ggconsort/>.
+
+The following packages are necessary:
+
+1.  ggplot2
+2.  ggconsort
+3.  devtools - used to download package from github repository
+4.  dplyr
+
+#### Installation
+
+```{r, rcbasic}
+#| code-fold: show
+#| code-summary: "Display/Hide code"
+#| warning: false
+
+# install.packages("devtools")
+# devtools::install_github("tgerke/ggconsort")
+
+```
+
+### Examples
+
+Below is a simple CONSORT diagram from Gerke's github page.
+
+![Simple consort diagram from <https://tgerke.github.io/ggconsort>](consort2.png){.lightbox}
+
+Below is a more complicated CONSORT diagram from a multisite randomized clinical trial, using two strata (site and sex). The diagram is created in the same way as the above - just filtering out into additional groups and creating additional boxes and lines. This is a real CONSORT example from a study in our department - site names and strata have been slightly edited.
+
+![CONSORT diagram showing two strata (site, sex) and randomization group assignments](consort1.png){.lightbox}
+>>>>>>> Stashed changes

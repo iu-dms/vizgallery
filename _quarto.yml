@@ -18,8 +18,9 @@ website:
       - section: "Templates"
         contents:
           - href: enrollment.qmd
-            text: "Enrollemnt"
+            text: "Enrollment"
           - raincloud.qmd
+          - consort.qmd
       - section: "R Markdown Tips"
         contents:
           - RMarkdownTips.qmd
