@@ -9,7 +9,9 @@ title: "BHDS Data Management Visualization Guide"
 
 ### Introduction
 
-This website is meant to be a resource for users interested in learning more about data visualization in R, paticularly for use cases that arise in our daily **data management** work. This site will contain code to help users get started with a variety of data visualizations commonly used in our work. While these plots can often be used to distribute summary data to project teams or other external audiences, many of these solutions can also help data managers ensure data quality and alert project staff if any data issues are present.
+This website is meant to be a resource for users interested in learning more about data visualization in R and producing reports with R Markdown, particularly for use cases that arise in our daily **data management** work. This site will contain code to help users get started with a variety of data visualizations that may be helpful in our work. While these plots can often be used to distribute summary data to project teams or other external audiences, many of these solutions can also help data managers ensure data quality and alert project staff if any data issues are present.
 
-For many basic, and some advanced R plots, consider familiarizing yourself with the great R Graph Gallery <https://r-graph-gallery.com/>. Many techniques that will be very beneficial in your work will be illustrated there, and will not be repeated in this resource. This site aims to expand on exisiting R visualization resources and generate templates for our group to leverage within their project work.
+For a great overview and beginner's guide to R Markdown, visit <https://rmarkdown.rstudio.com/lesson-1.html>. 
+
+For many basic, and some advanced R plots, consider familiarizing yourself with the great R Graph Gallery <https://r-graph-gallery.com/>. Many techniques that will be very beneficial in your work will be illustrated there, and will not be repeated in this resource. This site aims to expand on existing R visualization resources and generate templates for our group to leverage within their project work.
 

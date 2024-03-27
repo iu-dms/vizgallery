@@ -12,13 +12,15 @@ format:
 
 ### Background
 
-Often in our projects there will be a potential need to track study recruitment, and provide some descriptive information on the study cohort. Below are examples of some of the ways this can be done easily in R. 
+Often in our projects there will be a potential need to track study recruitment, and provide some descriptive information on the study cohort. Below are examples of some of the ways this can be done easily in R. If there are plots you would like to produce and need assistance, or have code that you think would be useful to the group please email [browstev@iu.edu](mailto:browstev@iu.edu) with your suggestions!
 
 ### Data Structure
 
-To replicate this plot, you would need to re-structure your data into the following format:
+To replicate the plots below, you would need to structure your data similarly to the following format. A test dataset is available to download [here](./EnrollReport_Input_Example.xlsx) 
 
-### Required Variables
+### General Variable List
+The variables listed below will generally be useful to provide a good summary of the study population/
+
 Variable	| Format	| Description
 ----------|---------|------------
 id	|Numeric or Alphanumeric	|Unique, anonymous, patient identifier. This can be in any project-specific format. _Required in all rows_
@@ -28,14 +30,9 @@ start_d	|Date (yyyy-mm-dd)	|Start date of study enrollment. _Should be the same 
 end_d	|Date (yyyy-mm-dd)	|End date of study enrollment. _Should be the same value in every row._
 age	|Numeric (integer or decimal)	|_Leave blank if unknown_
 sex	|M/F/O	|Biological sex at birth of patient. _Leave blank if unknown._ M, Male F, Female O, Other
-
-### Optional Variables
-Note: Although not used in any examples below, summary information will often be needed on racial distribution, and potentially on different groups/arms of your study.
-
-Variable	| Format	| Description
-----------|---------|------------
 race	|Numeric	|Follow standard coding from NIH. _Leave blank if unknown._ 1, American Indian or Alaska Native 2, Asian 3, Black or African American 5, Native Hawaiian or Other Pacific Islander 6, Unknown 7, White 8, Multi-racial 9, Other
 group	|Character or numeric (integer)	|To stratify overall report by group or generate individual group reports. This could be treatment versus control, multiple study sites, etc.
+
 
 ```{r setup}
 #| warning: false

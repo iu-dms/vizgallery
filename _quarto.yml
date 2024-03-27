@@ -8,22 +8,23 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - enrollment.qmd
-      - raincloud.qmd
-      - consort.qmd
+
   sidebar:
-    style: "docked"
+    style: "floating"
     search: true
     contents:
-      - section: "Templates"
+      - section: "Visualization Guides"
         contents:
           - href: enrollment.qmd
-            text: "Enrollment"
-          - raincloud.qmd
-          - consort.qmd
-      - section: "R Markdown Tips"
+            text: "Enrollment Tracking"
+          - href: raincloud.qmd
+            text: Raincloud Plots
+          - href: consort.qmd
+            text: CONSORT Diagrams
+      - section: "R Markdown"
         contents:
-          - RMarkdownTips.qmd
+          - href: RMarkdownTips.qmd
+            text: Tips
           
 format:
   html:
