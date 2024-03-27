@@ -68,6 +68,8 @@ head(df)
 #| code-fold: show
 #| code-summary: "Display/Hide plot code"
 #| warning: false
+#| lightbox:
+#|   description: Study Recruitment Plot
 
 #format data as necessary
 enrolldata <- df  |>  
@@ -139,6 +141,8 @@ Many studies recruit based on some weighting schema, often based on age and sex.
 #| code-fold: show
 #| code-summary: "Display/Hide plot code"
 #| warning: false
+#| lightbox:
+#|   description: Age/Sex Distribution via a Pyramid Plot
 
 enrolldata$sex <- ordered(enrolldata$sex, levels= c('F', 'M', 'O'), labels=c('Female', 'Male', 'Other'))
 

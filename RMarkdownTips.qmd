@@ -1,0 +1,13 @@
+---
+title: "RMarkdownTips"
+---
+
+## R Markdown Beginner Tips
+
+* **Remember to close your code chunks**
+Without the "```" at the end of your code chunk, when you try to render your document nothing will happen, but you will also not receive any errors.
+
+```{r}
+
+
+```

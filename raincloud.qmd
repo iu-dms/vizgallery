@@ -58,6 +58,9 @@ dummy <- bind_rows(grp1, grp2, grp3)
 
 
 ```{r boxplots2}
+#| lightbox:
+#|   description: Basic Box Plot
+
 ggplot(dummy, aes(x = group, y = value)) +
   geom_boxplot(fill = "grey92")
 
@@ -97,6 +100,8 @@ We'll use 3 distinct elements to make these plots as noted above, leveraging 3 d
 #| code-fold: show
 #| code-summary: "Display/Hide code"
 #| warning: false
+#| lightbox:
+#|   description: Basic Raincloud Plot
 
 library(palmerpenguins)
 pp <- penguins
@@ -129,6 +134,9 @@ This basic plot gives us much more information, and doesn't look bad at all. How
 #| code-block-border-left: "#31BAE9"
 #| code-overflow: wrap
 #| warning: false
+#| lightbox:
+#|   description: Styled Raincloud Plot
+
 
 new_labels <- c("Adelie"="ADELIE",
                       "Gentoo"="GENTOO",
@@ -188,7 +196,7 @@ plot
 :::{.callout-note}
 ## Note
 
-Use caution with color usage, as it is often not necessary. If reports will be consumed electronically, colors like used above would be accepatable. However, in some cases, say if reports will be printed often, using a color scheme of sequential blues (for example) would save sites/project teams ink usage and by most user friendly. See below for a custom blue scale that has worked well when sending to resource limited settings where printed reports are needed.
+Use caution when considering color. If reports will be consumed electronically, colors like used above would be acceptable. However, in some cases, say if reports will be printed, using a color scheme of sequential blues (for example) would save sites/project teams ink usage and be most user friendly. See below for a custom blue scale that has worked well when sending reports to resource limited settings where printed reports are used.
 
 :::
 

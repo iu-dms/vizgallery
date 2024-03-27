@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>IU BHDS Visualization Gallery - Consort Diagrams</title>
+<title>IU BHDS Visualization Gallery - RMarkdownTips</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,40 +19,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -75,9 +41,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
-<link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
-<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -143,7 +106,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./enrollment.html">Visualization Guides</a></li><li class="breadcrumb-item"><a href="./consort.html">CONSORT Diagrams</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./RMarkdownTips.html">R Markdown</a></li><li class="breadcrumb-item"><a href="./RMarkdownTips.html">Tips</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -186,7 +149,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./consort.html" class="sidebar-item-text sidebar-link active">
+  <a href="./consort.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">CONSORT Diagrams</span></a>
   </div>
 </li>
@@ -203,7 +166,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./RMarkdownTips.html" class="sidebar-item-text sidebar-link">
+  <a href="./RMarkdownTips.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Tips</span></a>
   </div>
 </li>
@@ -219,18 +182,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">Background</a></li>
-  <li><a href="#consort-diagrams---ggconsort" id="toc-consort-diagrams---ggconsort" class="nav-link" data-scroll-target="#consort-diagrams---ggconsort">CONSORT diagrams - ggconsort</a></li>
-  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
+  <li><a href="#r-markdown-beginner-tips" id="toc-r-markdown-beginner-tips" class="nav-link active" data-scroll-target="#r-markdown-beginner-tips">R Markdown Beginner Tips</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./enrollment.html">Visualization Guides</a></li><li class="breadcrumb-item"><a href="./consort.html">CONSORT Diagrams</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./RMarkdownTips.html">R Markdown</a></li><li class="breadcrumb-item"><a href="./RMarkdownTips.html">Tips</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Consort Diagrams</h1>
+<h1 class="title">RMarkdownTips</h1>
 </div>
 
 
@@ -247,66 +208,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Resources
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>The ggConsort package was created by Travis Gerke &amp; Garrick Aden-Buie. Find his github instructions for ggconsort here: <a href="https://tgerke.github.io/ggconsort/" class="uri">https://tgerke.github.io/ggconsort/</a>.</p>
-</div>
-</div>
-<section id="background" class="level3">
-<h3 class="anchored" data-anchor-id="background">Background</h3>
-<p>CONSORT (Consolidated Standards of Reporting Trials) <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4520133/" class="uri">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4520133/</a> is a scientific study protocol created to tackle issues that arise from randomized controlled trials (RCTs). There is a “checklist” of categories in the protocol (Title+Abstract, Introduction, Method, Results, Discussion, Other) that is to be included in parts of a published article, and the protocol also includes a flow diagram providing the reader with information on sstudy enrollment and flow. The ggConsort package uses ggplot2 and added functions to create a dynamic and reusable CONSORT diagram.</p>
-</section>
-<section id="consort-diagrams---ggconsort" class="level3">
-<h3 class="anchored" data-anchor-id="consort-diagrams---ggconsort">CONSORT diagrams - ggconsort</h3>
-<p>CONSORT diagrams are used to show enrollment/study progress and flow. They can often be used in regular reporting to study staff, or as final diagrams to show progress of trial phases. The github page for the package has many examples using a sample dataset, trail_data, that comes with the package <a href="https://tgerke.github.io/ggconsort/" class="uri">https://tgerke.github.io/ggconsort/</a>.</p>
-<p>The following packages are necessary:</p>
-<ol type="1">
-<li>ggplot2</li>
-<li>ggconsort</li>
-<li>devtools - used to download package from github repository</li>
-<li>dplyr</li>
-</ol>
-<section id="installation" class="level4">
-<h4 class="anchored" data-anchor-id="installation">Installation</h4>
-<div class="cell">
-<details open="" class="code-fold">
-<summary>Display/Hide code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("devtools")</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># devtools::install_github("tgerke/ggconsort")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-</section>
-</section>
-<section id="examples" class="level3">
-<h3 class="anchored" data-anchor-id="examples">Examples</h3>
-<p>Below is a simple CONSORT diagram from Gerke’s github page.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="consort2.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1" title="Simple consort diagram from https://tgerke.github.io/ggconsort"><img src="consort2.png" class="img-fluid figure-img" alt="Simple consort diagram from https://tgerke.github.io/ggconsort"></a></p>
-<figcaption>Simple consort diagram from <a href="https://tgerke.github.io/ggconsort" class="uri">https://tgerke.github.io/ggconsort</a></figcaption>
-</figure>
-</div>
-<p>Below is a more complicated CONSORT diagram from a multisite randomized clinical trial, using two strata (site and sex). The diagram is created in the same way as the above - just filtering out into additional groups and creating additional boxes and lines. This is a real CONSORT example from a study in our department - site names and strata have been slightly edited.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="consort1.png" class="lightbox" data-glightbox="description: .lightbox-desc-2" data-gallery="quarto-lightbox-gallery-2" title="CONSORT diagram showing two strata (site, sex) and randomization group assignments"><img src="consort1.png" class="img-fluid figure-img" alt="CONSORT diagram showing two strata (site, sex) and randomization group assignments"></a></p>
-<figcaption>CONSORT diagram showing two strata (site, sex) and randomization group assignments</figcaption>
-</figure>
-</div>
+<section id="r-markdown-beginner-tips" class="level2">
+<h2 class="anchored" data-anchor-id="r-markdown-beginner-tips">R Markdown Beginner Tips</h2>
+<ul>
+<li><strong>Remember to close your code chunks</strong> Without the “```” at the end of your code chunk, when you try to render your document nothing will happen, but you will also not receive any errors.</li>
+</ul>
 
 
-<div class="hidden" aria-hidden="true">
-<span class="glightbox-desc lightbox-desc-1">Simple consort diagram from <a href="https://tgerke.github.io/ggconsort" class="uri">https://tgerke.github.io/ggconsort</a></span>
-<span class="glightbox-desc lightbox-desc-2">CONSORT diagram showing two strata (site, sex) and randomization group assignments</span>
-</div>
 </section>
 
 </main> <!-- /main -->
@@ -842,31 +750,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","selector":".lightbox","loop":false,"closeEffect":"zoom","descPosition":"bottom"});
-window.onload = () => {
-  lightboxQuarto.on('slide_before_load', (data) => {
-    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
-    const href = trigger.getAttribute('href');
-    if (href !== null) {
-      const imgEl = window.document.querySelector(`a[href="${href}"] img`);
-      if (imgEl !== null) {
-        const srcAttr = imgEl.getAttribute("src");
-        if (srcAttr && srcAttr.startsWith("data:")) {
-          slideConfig.href = srcAttr;
-        }
-      }
-    } 
-  });
-
-  lightboxQuarto.on('slide_after_load', (data) => {
-    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
-    if (window.Quarto?.typesetMath) {
-      window.Quarto.typesetMath(slideNode);
-    }
-  });
-
-};
-          </script>
 
 
 
