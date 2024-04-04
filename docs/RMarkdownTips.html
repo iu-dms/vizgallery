@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>IU BHDS Visualization Gallery - RMarkdownTips</title>
+<title>IU BHDS Visualization Gallery - R Markdown</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -182,7 +216,8 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#r-markdown-beginner-tips" id="toc-r-markdown-beginner-tips" class="nav-link active" data-scroll-target="#r-markdown-beginner-tips">R Markdown Beginner Tips</a></li>
+  <li><a href="#cheatsheets-and-reference-guides" id="toc-cheatsheets-and-reference-guides" class="nav-link active" data-scroll-target="#cheatsheets-and-reference-guides">Cheatsheets and Reference Guides</a></li>
+  <li><a href="#other-tips" id="toc-other-tips" class="nav-link" data-scroll-target="#other-tips">Other Tips</a></li>
   </ul>
 </nav>
     </div>
@@ -191,7 +226,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./RMarkdownTips.html">R Markdown</a></li><li class="breadcrumb-item"><a href="./RMarkdownTips.html">Tips</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">RMarkdownTips</h1>
+<h1 class="title">R Markdown</h1>
 </div>
 
 
@@ -208,11 +243,84 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="r-markdown-beginner-tips" class="level2">
-<h2 class="anchored" data-anchor-id="r-markdown-beginner-tips">R Markdown Beginner Tips</h2>
+<section id="cheatsheets-and-reference-guides" class="level2">
+<h2 class="anchored" data-anchor-id="cheatsheets-and-reference-guides">Cheatsheets and Reference Guides</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./rmarkdown_cheatsheet.pdf"><img src="cheatsheet1.png" class="img-fluid figure-img" alt="R Markdown Cheatsheet"></a></p>
+<figcaption>R Markdown Cheatsheet</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./rmarkdown-reference.pdf"><img src="markdownguide.png" class="img-fluid figure-img" alt="Markdown reference Guide"></a></p>
+<figcaption>Markdown reference Guide</figcaption>
+</figure>
+</div>
+</section>
+<section id="other-tips" class="level2">
+<h2 class="anchored" data-anchor-id="other-tips">Other Tips</h2>
 <ul>
-<li><strong>Remember to close your code chunks</strong> Without the “```” at the end of your code chunk, when you try to render your document nothing will happen, but you will also not receive any errors.</li>
+<li><p><strong>Remember to close your code chunks</strong> Without the “```” at the end of your code chunk, when you try to render your document nothing will happen, but you will also not receive any errors.</p></li>
+<li><p><strong>Set up your document</strong></p></li>
 </ul>
+<p>Set yourself up for success! At the top of your document, create a code chunk that lists all the packages that you will use. This makes sure you’re ready for the rest of your workflow.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="in">library(ggplot2)</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="in">library(dplyr)</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="in">library(readxl)</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><strong>Name code chunks for easier navigation</strong></li>
+</ul>
+<p>Label code chunks to remember what each chunk is for. For example, you could call the chunk with your packages setup:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r setup}</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="in">library(ggplot2)</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="in">library(dplyr)</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r setup}</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="in">library(readxl)</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li><strong>Add chunk options to customize your code chunks</strong></li>
+</ul>
+<p>When you knit your file, you may want your code chunks to look a certain way. You can add chunk options to customize the components of your code chunks.</p>
+<p>For example, if you want the code to show up in your knitted file without any messages or warnings, you can write message = FALSE and warning = FALSE in the chunk header:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r setup2, message = FALSE, warning = FALSE}</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="in">library(car)</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li><strong>Or use global options for your chunks</strong></li>
+</ul>
+<p>Did you know that you can use the same settings across all the code chunks in your R Markdown document? Set your global R options with options() and your knitr global chunk options with knitr::opts_chunk$set().</p>
+<p>For example, if you know that you want all your numbers to have three digits and all your figures to have a width of 8, use the code below:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r setup3}</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="in"># set up global R options</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="in">options(digits = 3)</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="in"># set up knitr global chunk options</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::opts_chunk$set(fig.width = 8)</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 
 
 </section>
