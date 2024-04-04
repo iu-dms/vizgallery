@@ -8,6 +8,9 @@ title: "R Markdown"
 
 [![Markdown reference Guide](markdownguide.png)](./rmarkdown-reference.pdf)
 
+
+Posit has a great initial guide to start learning R Markdown: <https://rmarkdown.rstudio.com/lesson-1.html>
+
 ## Other  Tips
 
 * **Remember to close your code chunks**
@@ -26,9 +29,7 @@ library(readxl)
 * **Name code chunks for easier navigation**
 
 Label code chunks to remember what each chunk is for. For example, you could call the chunk with your packages setup:
-```{r setup}
-#| echo: fenced
-
+```{{r setup}}
 library(ggplot2)
 library(dplyr)
 library(readxl)
@@ -39,9 +40,7 @@ library(readxl)
 When you knit your file, you may want your code chunks to look a certain way. You can add chunk options to customize the components of your code chunks.
 
 For example, if you want the code to show up in your knitted file without any messages or warnings, you can write message = FALSE and warning = FALSE in the chunk header:
-```{r setup2, message = FALSE, warning = FALSE}
-#| echo: fenced
-
+```{{r setup, message = FALSE, warning = FALSE}}
 library(car)
 ```
 
@@ -50,9 +49,7 @@ library(car)
 Did you know that you can use the same settings across all the code chunks in your R Markdown document? Set your global R options with options() and your knitr global chunk options with knitr::opts_chunk$set().
 
 For example, if you know that you want all your numbers to have three digits and all your figures to have a width of 8, use the code below:
-```{r setup3}
-#| echo: fenced
-
+```{{r setup3}}
 # set up global R options
 options(digits = 3)
 

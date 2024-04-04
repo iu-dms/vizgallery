@@ -4,7 +4,7 @@
     "href": "RMarkdownTips.html",
     "title": "R Markdown",
     "section": "",
-    "text": "R Markdown Cheatsheet\n\n\n\n\n\nMarkdown reference Guide",
+    "text": "R Markdown Cheatsheet\n\n\n\n\n\nMarkdown reference Guide\n\n\nPosit has a great initial guide to start learning R Markdown: https://rmarkdown.rstudio.com/lesson-1.html",
     "crumbs": [
       "Home",
       "R Markdown",
@@ -16,7 +16,7 @@
     "href": "RMarkdownTips.html#cheatsheets-and-reference-guides",
     "title": "R Markdown",
     "section": "",
-    "text": "R Markdown Cheatsheet\n\n\n\n\n\nMarkdown reference Guide",
+    "text": "R Markdown Cheatsheet\n\n\n\n\n\nMarkdown reference Guide\n\n\nPosit has a great initial guide to start learning R Markdown: https://rmarkdown.rstudio.com/lesson-1.html",
     "crumbs": [
       "Home",
       "R Markdown",
@@ -28,7 +28,7 @@
     "href": "RMarkdownTips.html#other-tips",
     "title": "R Markdown",
     "section": "Other Tips",
-    "text": "Other Tips\n\nRemember to close your code chunks Without the “```” at the end of your code chunk, when you try to render your document nothing will happen, but you will also not receive any errors.\nSet up your document\n\nSet yourself up for success! At the top of your document, create a code chunk that lists all the packages that you will use. This makes sure you’re ready for the rest of your workflow.\n```{r}\nlibrary(ggplot2)\nlibrary(dplyr)\nlibrary(readxl)\n```\n\nName code chunks for easier navigation\n\nLabel code chunks to remember what each chunk is for. For example, you could call the chunk with your packages setup:\n\n```{r setup}\nlibrary(ggplot2)\nlibrary(dplyr)\n```\n\n\nAttaching package: 'dplyr'\n\n\nThe following objects are masked from 'package:stats':\n\n    filter, lag\n\n\nThe following objects are masked from 'package:base':\n\n    intersect, setdiff, setequal, union\n\n```{r setup}\nlibrary(readxl)\n```\n\n\nAdd chunk options to customize your code chunks\n\nWhen you knit your file, you may want your code chunks to look a certain way. You can add chunk options to customize the components of your code chunks.\nFor example, if you want the code to show up in your knitted file without any messages or warnings, you can write message = FALSE and warning = FALSE in the chunk header:\n\n```{r setup2, message = FALSE, warning = FALSE}\nlibrary(car)\n```\n\n\nOr use global options for your chunks\n\nDid you know that you can use the same settings across all the code chunks in your R Markdown document? Set your global R options with options() and your knitr global chunk options with knitr::opts_chunk$set().\nFor example, if you know that you want all your numbers to have three digits and all your figures to have a width of 8, use the code below:\n\n```{r setup3}\n# set up global R options\noptions(digits = 3)\n\n# set up knitr global chunk options\nknitr::opts_chunk$set(fig.width = 8)\n```",
+    "text": "Other Tips\n\nRemember to close your code chunks Without the “```” at the end of your code chunk, when you try to render your document nothing will happen, but you will also not receive any errors.\nSet up your document\n\nSet yourself up for success! At the top of your document, create a code chunk that lists all the packages that you will use. This makes sure you’re ready for the rest of your workflow.\n```{r}\nlibrary(ggplot2)\nlibrary(dplyr)\nlibrary(readxl)\n```\n\nName code chunks for easier navigation\n\nLabel code chunks to remember what each chunk is for. For example, you could call the chunk with your packages setup:\n```{r setup}\nlibrary(ggplot2)\nlibrary(dplyr)\nlibrary(readxl)\n```\n\nAdd chunk options to customize your code chunks\n\nWhen you knit your file, you may want your code chunks to look a certain way. You can add chunk options to customize the components of your code chunks.\nFor example, if you want the code to show up in your knitted file without any messages or warnings, you can write message = FALSE and warning = FALSE in the chunk header: {r setup, message = FALSE, warning = FALSE} library(car)\n\nOr use global options for your chunks\n\nDid you know that you can use the same settings across all the code chunks in your R Markdown document? Set your global R options with options() and your knitr global chunk options with knitr::opts_chunk$set().\nFor example, if you know that you want all your numbers to have three digits and all your figures to have a width of 8, use the code below:\n```{r setup3}\n# set up global R options\noptions(digits = 3)\n\n# set up knitr global chunk options\nknitr::opts_chunk$set(fig.width = 8)\n```",
     "crumbs": [
       "Home",
       "R Markdown",
