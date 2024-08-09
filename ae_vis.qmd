@@ -34,12 +34,11 @@ eosdate	|Date (mm/dd/yyyy)	|Date participant exited the study, or date study end
 
 ### Package List
 
-The code will automatically install/load these for you, but below is a list of package dependecies:
-  "tidyverse", "ggplot2", "scales", "RColorBrewer", "forcats", "ggforce", "pagedown", "htmltools, "ggh4x"
+The code will automatically install/load these for you using the code chunk below
 
 ```{r setup}
 #| warning: false
-#| include: false
+#| code-fold: false
 
 #####################################################
 ##Load/install necessary CRAN packages
@@ -61,20 +60,21 @@ invisible(lapply(packages, library, character.only = TRUE))
 
 See below for an example of the input file
 
-
 ```{r}
 #| code-fold: false
 #| code-summary: "Sample Data"
 #| warning: false
 
-df <- read.csv("Sample AE Data_v2.csv")
+infile="Sample AE Data_v2.csv"
+
+df <- read.csv(infile)
 head(df)
 ```
 
 ```{r}
 #| code-fold: show
 #| code-summary: "Display/Hide plot code"
-#| warning: false
+#| eval: false
 #| lightbox:
 #|   description: Adverse Event Plot
 
@@ -147,4 +147,4 @@ for(i in 1:n_pages(vis)){
 
 
 ```
-![](Example AE Plot.png){width=80%}
+![](Example AE Plot.png){width=60%}

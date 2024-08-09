@@ -21,6 +21,8 @@ website:
             text: Raincloud Plots
           - href: consort.qmd
             text: CONSORT Diagrams
+          - href: ae_vis.qmd
+            text: Adverse Event Plots
       - section: "R Markdown"
         contents:
           - href: RMarkdownTips.qmd
