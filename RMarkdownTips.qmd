@@ -40,6 +40,7 @@ library(readxl)
 When you knit your file, you may want your code chunks to look a certain way. You can add chunk options to customize the components of your code chunks.
 
 For example, if you want the code to show up in your knitted file without any messages or warnings, you can write message = FALSE and warning = FALSE in the chunk header:
+
 ```{{r setup, message = FALSE, warning = FALSE}}
 library(car)
 ```
@@ -49,7 +50,7 @@ library(car)
 Did you know that you can use the same settings across all the code chunks in your R Markdown document? Set your global R options with options() and your knitr global chunk options with knitr::opts_chunk$set().
 
 For example, if you know that you want all your numbers to have three digits and all your figures to have a width of 8, use the code below:
-```{{r setup3}}
+```{{r setup}}
 # set up global R options
 options(digits = 3)
 

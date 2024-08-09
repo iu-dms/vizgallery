@@ -1,0 +1,150 @@
+---
+title: "Adverse Event Visualization"
+format:
+  html:
+    theme: 
+      light: flatly
+      dark: darkly
+    css: styles.css
+    toc: true
+
+---
+
+### Background
+
+The following code can serve as a template (or finished product) for your projects if you need to plot adverse events by study participant. If your project has needs for additional variations of adverse event visualizations, please contact [browstev@iu.edu](mailto:browstev@iu.edu) with your suggestions!
+
+### Data Structure
+
+To replicate the plots below, you will need to replicate the data structure below exactly. A test dataset is available to download [here](./Sample AE Data_v2.csv) 
+
+### Variable List
+								
+Variable	| Format	| Description
+----------|---------|------------
+usubjid	|Numeric or Alphanumeric	|Unique, anonymous, patient identifier. This can be in any project-specific format. _Required in all rows_
+aedecod	|Character	|Adverse event name.   _Required in all rows_
+aefinish	|Integer (Boolean)	|Has the adverse event concluded? 1=yes, 0=no. _Required in all rows_
+aesev	|Character	|Adverse event severity. _Required in all rows_
+aestdate	|Date (mm/dd/yyyy)	|Adverse event start date. Must be in specified format. _Required in all rows_
+aeendate	|Date (mm/dd/yyyy)	|Adverse event end date. Must be in specified format. _Required in all rows_
+aeseq	|Integer | Numeric sequence denoting chronological order. _Required in all rows_
+enrolldate	|Date (mm/dd/yyyy)	|Date participant enrolled into the study. _Required in all rows_
+eosdate	|Date (mm/dd/yyyy)	|Date participant exited the study, or date study ended. _Required in all rows_
+
+### Package List
+
+The code will automatically install/load these for you, but below is a list of package dependecies:
+  "tidyverse", "ggplot2", "scales", "RColorBrewer", "forcats", "ggforce", "pagedown", "htmltools, "ggh4x"
+
+```{r setup}
+#| warning: false
+#| include: false
+
+#####################################################
+##Load/install necessary CRAN packages
+packages <- c("tidyverse", "ggplot2", "scales", "RColorBrewer", "forcats", "ggforce", "pagedown", "htmltools", "ggh4x")
+##Install packages not yet installed
+installed_packages <- packages %in% rownames(installed.packages())
+if (any(installed_packages == FALSE)) {
+  install.packages(packages[!installed_packages])
+}
+##Attach Packages
+invisible(lapply(packages, library, character.only = TRUE))
+
+#####################################################
+
+
+```
+
+### Input file
+
+See below for an example of the input file
+
+
+```{r}
+#| code-fold: false
+#| code-summary: "Sample Data"
+#| warning: false
+
+df <- read.csv("Sample AE Data_v2.csv")
+head(df)
+```
+
+```{r}
+#| code-fold: show
+#| code-summary: "Display/Hide plot code"
+#| warning: false
+#| lightbox:
+#|   description: Adverse Event Plot
+
+datain <- read.csv(infile) |> 
+  mutate(across(c(aestdate, aeendate, eosdate, enrolldate), ~ as.Date(.x, "%m/%d/%Y" ))) |> 
+  group_by(usubjid) |> 
+  mutate(aeendate=if_else(is.na(aeendate), eosdate , as.Date(aeendate))) |> 
+  mutate(ae_days=if_else(!is.na(aeendate), as.numeric(as.Date(aeendate, "%m/%d/%Y")-as.Date(aestdate, "%m/%d/%Y"))+1, NA_integer_)) |> 
+  mutate(ae_event=paste0(aedecod, " (", aeseq, ")" ))
+  
+datalong <- datain |> 
+  select(usubjid, ae_event, aesev, aeseq, aefinish, enrolldate, eosdate, aestdate, aeendate, ae_days ) |>
+  pivot_longer(cols = c(aestdate, aeendate), names_to = "date_type", values_to ="datevalue" ) |> 
+  arrange(usubjid, desc(aeseq)) |> 
+  ungroup()
+
+dataend <- datalong |> 
+  filter(date_type=="aeendate")
+
+csdates <- datalong |> 
+  group_by(usubjid) |> 
+  summarise(enrolldate=min(enrolldate, na.rm = T), eosdate=max(eosdate, na.rm=T), lastaeend=max(datevalue, na.rm=T))
+
+
+# Create list of arguments to set the x-axis scale for each ID
+x_scale_lim <- csdates |>
+  str_glue_data("usubjid =={usubjid} ~ scale_x_date(limits = c(as.Date('{enrolldate}'), max(as.Date('{eosdate}'), as.Date('{lastaeend}')) ),
+                date_labels = '%m/%d/%Y',
+               expand =  expansion(mult = c(.25, .25)),
+               breaks=pretty_breaks())") %>% 
+  str_flatten(", ")  %>% 
+  str_c("list(", ., ")") %>% 
+  parse(text = .) %>% 
+  eval()
+
+
+
+# Create label for facet strip
+id_labels <- as_labeller(function(x) paste0('Adverse Events for Subject ID = ', x ))
+
+
+#Generate main plot
+vis <- ggplot(datalong, aes(y=fct_reorder(ae_event, aeseq),  x=datevalue, color=aesev, label=paste0(" ", ae_days, "d"))) +
+  geom_line(linewidth=5) +
+  facet_wrap_paginate(. ~ usubjid, ncol = 1, nrow=1, scales = "free", labeller = labeller(usubjid=id_labels)) + 
+  scale_color_manual(values = c("#1b9e77",  "#7570b3", "#d95f02"))+
+  geom_text(data=subset(dataend,aefinish == 1), size=3, color="black",  aes(hjust=0))+
+  geom_point(data=subset(dataend,aefinish == 0) , aes(x=datevalue,y=ae_event,fill=aesev, color=aesev, hjust=0, vjust=0),
+             shape="\u279c", size=6, show.legend = F) +
+  geom_point(data=subset(dataend,ae_days==1) , aes(x=datevalue,y=ae_event,fill=aesev, color=aesev, hjust=0, vjust=0),
+             shape="\u007c", size=4, show.legend = F) +
+  geom_vline(data=csdates, aes(xintercept=enrolldate), linetype=2, color="blue", alpha=0.4 ) +
+  geom_vline(data=csdates, aes(xintercept=eosdate), linetype=2, color="blue", alpha=0.4) +
+  labs(x=NULL, y=NULL, color="Severity")+
+  theme_bw()+
+  theme(legend.position = "right", axis.text.x = element_text(angle = 45, hjust=1))
+   
+for(i in 1:n_pages(vis)){
+  p_out <-  vis + 
+    facet_wrap_paginate(. ~ usubjid, 
+                        ncol = 1, 
+                        nrow = 1, 
+                        page = i, 
+                        scales = "free", 
+                        labeller = labeller(usubjid=id_labels))+
+  ggh4x::facetted_pos_scales(x=x_scale_lim)
+  
+  print(p_out)
+}
+
+
+```
+![](Example AE Plot.png){width=80%}
