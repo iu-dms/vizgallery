@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>IU BHDS Visualization Gallery - Consort Diagrams</title>
+<title>IU BHDS Visualization Gallery - Adverse Event Visualization</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -75,9 +75,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
-<link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
-<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -143,7 +140,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./enrollment.html">Visualization Guides</a></li><li class="breadcrumb-item"><a href="./consort.html">CONSORT Diagrams</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./enrollment.html">Visualization Guides</a></li><li class="breadcrumb-item"><a href="./ae_vis.html">Adverse Event Plots</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -186,8 +183,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./consort.html" class="sidebar-item-text sidebar-link active">
+  <a href="./consort.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">CONSORT Diagrams</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ae_vis.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Adverse Event Plots</span></a>
   </div>
 </li>
       </ul>
@@ -220,17 +223,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">Background</a></li>
-  <li><a href="#consort-diagrams---ggconsort" id="toc-consort-diagrams---ggconsort" class="nav-link" data-scroll-target="#consort-diagrams---ggconsort">CONSORT diagrams - ggconsort</a></li>
-  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
+  <li><a href="#data-structure" id="toc-data-structure" class="nav-link" data-scroll-target="#data-structure">Data Structure</a></li>
+  <li><a href="#variable-list" id="toc-variable-list" class="nav-link" data-scroll-target="#variable-list">Variable List</a></li>
+  <li><a href="#package-list" id="toc-package-list" class="nav-link" data-scroll-target="#package-list">Package List</a></li>
+  <li><a href="#input-file" id="toc-input-file" class="nav-link" data-scroll-target="#input-file">Input file</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./enrollment.html">Visualization Guides</a></li><li class="breadcrumb-item"><a href="./consort.html">CONSORT Diagrams</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./enrollment.html">Visualization Guides</a></li><li class="breadcrumb-item"><a href="./ae_vis.html">Adverse Event Plots</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Consort Diagrams</h1>
+<h1 class="title">Adverse Event Visualization</h1>
 </div>
 
 
@@ -247,66 +252,219 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Resources
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>The ggConsort package was created by Travis Gerke &amp; Garrick Aden-Buie. Find his github instructions for ggconsort here: <a href="https://tgerke.github.io/ggconsort/" class="uri">https://tgerke.github.io/ggconsort/</a>.</p>
-</div>
-</div>
 <section id="background" class="level3">
 <h3 class="anchored" data-anchor-id="background">Background</h3>
-<p>CONSORT (Consolidated Standards of Reporting Trials) <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4520133/" class="uri">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4520133/</a> is a scientific study protocol created to tackle issues that arise from randomized controlled trials (RCTs). There is a “checklist” of categories in the protocol (Title+Abstract, Introduction, Method, Results, Discussion, Other) that is to be included in parts of a published article, and the protocol also includes a flow diagram providing the reader with information on sstudy enrollment and flow. The ggConsort package uses ggplot2 and added functions to create a dynamic and reusable CONSORT diagram.</p>
+<p>The following code can serve as a template (or finished product) for your projects if you need to plot adverse events by study participant. If your project has needs for additional variations of adverse event visualizations, please contact <a href="mailto:browstev@iu.edu">browstev@iu.edu</a> with your suggestions!</p>
 </section>
-<section id="consort-diagrams---ggconsort" class="level3">
-<h3 class="anchored" data-anchor-id="consort-diagrams---ggconsort">CONSORT diagrams - ggconsort</h3>
-<p>CONSORT diagrams are used to show enrollment/study progress and flow. They can often be used in regular reporting to study staff, or as final diagrams to show progress of trial phases. The github page for the package has many examples using a sample dataset, trail_data, that comes with the package <a href="https://tgerke.github.io/ggconsort/" class="uri">https://tgerke.github.io/ggconsort/</a>.</p>
-<p>The following packages are necessary:</p>
-<ol type="1">
-<li>ggplot2</li>
-<li>ggconsort</li>
-<li>devtools - used to download package from github repository</li>
-<li>dplyr</li>
-</ol>
-<section id="installation" class="level4">
-<h4 class="anchored" data-anchor-id="installation">Installation</h4>
+<section id="data-structure" class="level3">
+<h3 class="anchored" data-anchor-id="data-structure">Data Structure</h3>
+<p>To replicate the plots below, you will need to replicate the data structure below exactly. A test dataset is available to download <a href="./Sample AE Data_v2.csv">here</a></p>
+</section>
+<section id="variable-list" class="level3">
+<h3 class="anchored" data-anchor-id="variable-list">Variable List</h3>
+<table class="table">
+<colgroup>
+<col style="width: 32%">
+<col style="width: 29%">
+<col style="width: 38%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>usubjid</td>
+<td>Numeric or Alphanumeric</td>
+<td>Unique, anonymous, patient identifier. This can be in any project-specific format. <em>Required in all rows</em></td>
+</tr>
+<tr class="even">
+<td>aedecod</td>
+<td>Character</td>
+<td>Adverse event name. <em>Required in all rows</em></td>
+</tr>
+<tr class="odd">
+<td>aefinish</td>
+<td>Integer (Boolean)</td>
+<td>Has the adverse event concluded? 1=yes, 0=no. <em>Required in all rows</em></td>
+</tr>
+<tr class="even">
+<td>aesev</td>
+<td>Character</td>
+<td>Adverse event severity. <em>Required in all rows</em></td>
+</tr>
+<tr class="odd">
+<td>aestdate</td>
+<td>Date (mm/dd/yyyy)</td>
+<td>Adverse event start date. Must be in specified format. <em>Required in all rows</em></td>
+</tr>
+<tr class="even">
+<td>aeendate</td>
+<td>Date (mm/dd/yyyy)</td>
+<td>Adverse event end date. Must be in specified format. <em>Required in all rows</em></td>
+</tr>
+<tr class="odd">
+<td>aeseq</td>
+<td>Integer</td>
+<td>Numeric sequence denoting chronological order. <em>Required in all rows</em></td>
+</tr>
+<tr class="even">
+<td>enrolldate</td>
+<td>Date (mm/dd/yyyy)</td>
+<td>Date participant enrolled into the study. <em>Required in all rows</em></td>
+</tr>
+<tr class="odd">
+<td>eosdate</td>
+<td>Date (mm/dd/yyyy)</td>
+<td>Date participant exited the study, or date study ended. <em>Required in all rows</em></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="package-list" class="level3">
+<h3 class="anchored" data-anchor-id="package-list">Package List</h3>
+<p>The code will automatically install/load these for you using the code chunk below</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">#####################################################</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="do">##Load/install necessary CRAN packages</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"tidyverse"</span>, <span class="st">"ggplot2"</span>, <span class="st">"scales"</span>, <span class="st">"RColorBrewer"</span>, <span class="st">"forcats"</span>, <span class="st">"ggforce"</span>, <span class="st">"pagedown"</span>, <span class="st">"htmltools"</span>, <span class="st">"ggh4x"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="do">##Install packages not yet installed</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>installed_packages <span class="ot">&lt;-</span> packages <span class="sc">%in%</span> <span class="fu">rownames</span>(<span class="fu">installed.packages</span>())</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">any</span>(installed_packages <span class="sc">==</span> <span class="cn">FALSE</span>)) {</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">install.packages</span>(packages[<span class="sc">!</span>installed_packages])</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="do">##Attach Packages</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">lapply</span>(packages, library, <span class="at">character.only =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="do">#####################################################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="input-file" class="level3">
+<h3 class="anchored" data-anchor-id="input-file">Input file</h3>
+<p>See below for an example of the input file</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>infile<span class="ot">=</span><span class="st">"Sample AE Data_v2.csv"</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(infile)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  usubjid                aedecod aefinish    aesev  aestdate  aeendate aeseq
+1   11055           Leukocytosis        1     Mild  1/3/2016  3/6/2016     1
+2   11058 Elevated liver enzymes        1 Moderate 2/14/2016 3/26/2016     1
+3   11058            Hypokalemia        1 Moderate 2/14/2016 2/26/2016     2
+4   11058           Leukocytosis        1 Moderate 2/14/2016 3/26/2016     3
+5   11058             Cellulitis        1 Moderate 2/23/2016 3/26/2016     4
+6   11058       Thrombocytopenia        1     Mild 2/23/2016 3/26/2016     5
+  enrolldate   eosdate
+1   1/2/2016 6/29/2016
+2   2/7/2016 3/27/2016
+3   2/7/2016 3/27/2016
+4   2/7/2016 3/27/2016
+5   2/7/2016 3/27/2016
+6   2/7/2016 3/27/2016</code></pre>
+</div>
+</div>
 <div class="cell">
 <details open="" class="code-fold">
-<summary>Display/Hide code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("devtools")</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># devtools::install_github("tgerke/ggconsort")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<summary>Display/Hide plot code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>datain <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(infile) <span class="sc">|&gt;</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(aestdate, aeendate, eosdate, enrolldate), <span class="sc">~</span> <span class="fu">as.Date</span>(.x, <span class="st">"%m/%d/%Y"</span> ))) <span class="sc">|&gt;</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(usubjid) <span class="sc">|&gt;</span> </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">aeendate=</span><span class="fu">if_else</span>(<span class="fu">is.na</span>(aeendate), eosdate , <span class="fu">as.Date</span>(aeendate))) <span class="sc">|&gt;</span> </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ae_days=</span><span class="fu">if_else</span>(<span class="sc">!</span><span class="fu">is.na</span>(aeendate), <span class="fu">as.numeric</span>(<span class="fu">as.Date</span>(aeendate, <span class="st">"%m/%d/%Y"</span>)<span class="sc">-</span><span class="fu">as.Date</span>(aestdate, <span class="st">"%m/%d/%Y"</span>))<span class="sc">+</span><span class="dv">1</span>, <span class="cn">NA_integer_</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ae_event=</span><span class="fu">paste0</span>(aedecod, <span class="st">" ("</span>, aeseq, <span class="st">")"</span> ))</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>datalong <span class="ot">&lt;-</span> datain <span class="sc">|&gt;</span> </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(usubjid, ae_event, aesev, aeseq, aefinish, enrolldate, eosdate, aestdate, aeendate, ae_days ) <span class="sc">|&gt;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(aestdate, aeendate), <span class="at">names_to =</span> <span class="st">"date_type"</span>, <span class="at">values_to =</span><span class="st">"datevalue"</span> ) <span class="sc">|&gt;</span> </span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(usubjid, <span class="fu">desc</span>(aeseq)) <span class="sc">|&gt;</span> </span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>dataend <span class="ot">&lt;-</span> datalong <span class="sc">|&gt;</span> </span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(date_type<span class="sc">==</span><span class="st">"aeendate"</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>csdates <span class="ot">&lt;-</span> datalong <span class="sc">|&gt;</span> </span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(usubjid) <span class="sc">|&gt;</span> </span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">enrolldate=</span><span class="fu">min</span>(enrolldate, <span class="at">na.rm =</span> T), <span class="at">eosdate=</span><span class="fu">max</span>(eosdate, <span class="at">na.rm=</span>T), <span class="at">lastaeend=</span><span class="fu">max</span>(datevalue, <span class="at">na.rm=</span>T))</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Create list of arguments to set the x-axis scale for each ID</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>x_scale_lim <span class="ot">&lt;-</span> csdates <span class="sc">|&gt;</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_glue_data</span>(<span class="st">"usubjid =={usubjid} ~ scale_x_date(limits = c(as.Date('{enrolldate}'), max(as.Date('{eosdate}'), as.Date('{lastaeend}')) ),</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="st">                date_labels = '%m/%d/%Y',</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="st">               expand =  expansion(mult = c(.25, .25)),</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="st">               breaks=pretty_breaks())"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_flatten</span>(<span class="st">", "</span>)  <span class="sc">%&gt;%</span> </span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_c</span>(<span class="st">"list("</span>, ., <span class="st">")"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">parse</span>(<span class="at">text =</span> .) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">eval</span>()</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Create label for facet strip</span></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>id_labels <span class="ot">&lt;-</span> <span class="fu">as_labeller</span>(<span class="cf">function</span>(x) <span class="fu">paste0</span>(<span class="st">'Adverse Events for Subject ID = '</span>, x ))</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a><span class="co">#Generate main plot</span></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>vis <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(datalong, <span class="fu">aes</span>(<span class="at">y=</span><span class="fu">fct_reorder</span>(ae_event, aeseq),  <span class="at">x=</span>datevalue, <span class="at">color=</span>aesev, <span class="at">label=</span><span class="fu">paste0</span>(<span class="st">" "</span>, ae_days, <span class="st">"d"</span>))) <span class="sc">+</span></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth=</span><span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap_paginate</span>(. <span class="sc">~</span> usubjid, <span class="at">ncol =</span> <span class="dv">1</span>, <span class="at">nrow=</span><span class="dv">1</span>, <span class="at">scales =</span> <span class="st">"free"</span>, <span class="at">labeller =</span> <span class="fu">labeller</span>(<span class="at">usubjid=</span>id_labels)) <span class="sc">+</span> </span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#1b9e77"</span>,  <span class="st">"#7570b3"</span>, <span class="st">"#d95f02"</span>))<span class="sc">+</span></span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">data=</span><span class="fu">subset</span>(dataend,aefinish <span class="sc">==</span> <span class="dv">1</span>), <span class="at">size=</span><span class="dv">3</span>, <span class="at">color=</span><span class="st">"black"</span>,  <span class="fu">aes</span>(<span class="at">hjust=</span><span class="dv">0</span>))<span class="sc">+</span></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span><span class="fu">subset</span>(dataend,aefinish <span class="sc">==</span> <span class="dv">0</span>) , <span class="fu">aes</span>(<span class="at">x=</span>datevalue,<span class="at">y=</span>ae_event,<span class="at">fill=</span>aesev, <span class="at">color=</span>aesev, <span class="at">hjust=</span><span class="dv">0</span>, <span class="at">vjust=</span><span class="dv">0</span>),</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>             <span class="at">shape=</span><span class="st">"\u279c"</span>, <span class="at">size=</span><span class="dv">6</span>, <span class="at">show.legend =</span> F) <span class="sc">+</span></span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span><span class="fu">subset</span>(dataend,ae_days<span class="sc">==</span><span class="dv">1</span>) , <span class="fu">aes</span>(<span class="at">x=</span>datevalue,<span class="at">y=</span>ae_event,<span class="at">fill=</span>aesev, <span class="at">color=</span>aesev, <span class="at">hjust=</span><span class="dv">0</span>, <span class="at">vjust=</span><span class="dv">0</span>),</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>             <span class="at">shape=</span><span class="st">"\u007c"</span>, <span class="at">size=</span><span class="dv">4</span>, <span class="at">show.legend =</span> F) <span class="sc">+</span></span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">data=</span>csdates, <span class="fu">aes</span>(<span class="at">xintercept=</span>enrolldate), <span class="at">linetype=</span><span class="dv">2</span>, <span class="at">color=</span><span class="st">"blue"</span>, <span class="at">alpha=</span><span class="fl">0.4</span> ) <span class="sc">+</span></span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">data=</span>csdates, <span class="fu">aes</span>(<span class="at">xintercept=</span>eosdate), <span class="at">linetype=</span><span class="dv">2</span>, <span class="at">color=</span><span class="st">"blue"</span>, <span class="at">alpha=</span><span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="cn">NULL</span>, <span class="at">y=</span><span class="cn">NULL</span>, <span class="at">color=</span><span class="st">"Severity"</span>)<span class="sc">+</span></span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"right"</span>, <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust=</span><span class="dv">1</span>))</span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">n_pages</span>(vis)){</span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>  p_out <span class="ot">&lt;-</span>  vis <span class="sc">+</span> </span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_wrap_paginate</span>(. <span class="sc">~</span> usubjid, </span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>                        <span class="at">ncol =</span> <span class="dv">1</span>, </span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>                        <span class="at">nrow =</span> <span class="dv">1</span>, </span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>                        <span class="at">page =</span> i, </span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>                        <span class="at">scales =</span> <span class="st">"free"</span>, </span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>                        <span class="at">labeller =</span> <span class="fu">labeller</span>(<span class="at">usubjid=</span>id_labels))<span class="sc">+</span></span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>  ggh4x<span class="sc">::</span><span class="fu">facetted_pos_scales</span>(<span class="at">x=</span>x_scale_lim)</span>
+<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(p_out)</span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-</section>
-</section>
-<section id="examples" class="level3">
-<h3 class="anchored" data-anchor-id="examples">Examples</h3>
-<p>Below is a simple CONSORT diagram from Gerke’s github page.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="consort2.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1" title="Simple consort diagram from https://tgerke.github.io/ggconsort"><img src="consort2.png" class="img-fluid figure-img" alt="Simple consort diagram from https://tgerke.github.io/ggconsort"></a></p>
-<figcaption>Simple consort diagram from <a href="https://tgerke.github.io/ggconsort" class="uri">https://tgerke.github.io/ggconsort</a></figcaption>
-</figure>
-</div>
-<p>Below is a more complicated CONSORT diagram from a multisite randomized clinical trial, using two strata (site and sex). The diagram is created in the same way as the above - just filtering out into additional groups and creating additional boxes and lines. This is a real CONSORT example from a study in our department - site names and strata have been slightly edited.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="consort1.png" class="lightbox" data-glightbox="description: .lightbox-desc-2" data-gallery="quarto-lightbox-gallery-2" title="CONSORT diagram showing two strata (site, sex) and randomization group assignments"><img src="consort1.png" class="img-fluid figure-img" alt="CONSORT diagram showing two strata (site, sex) and randomization group assignments"></a></p>
-<figcaption>CONSORT diagram showing two strata (site, sex) and randomization group assignments</figcaption>
-</figure>
+<p><img src="Example AE Plot.png" class="img-fluid" style="width:60.0%"> ### PDF Output</p>
+<p>Add the code to the end of your .RMD file to convert the HTML output into a PDF.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Convert HTML to PDF</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>footer <span class="ot">&lt;-</span> <span class="fu">div</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">style =</span> <span class="st">"font-size: 8pt; text-align: right; width: 100%; padding-right: 12pt; font-family:TimesNewRoman"</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">span</span>(<span class="at">class =</span> <span class="st">"pageNumber"</span>), <span class="st">"/"</span>, <span class="fu">span</span>(<span class="at">class =</span> <span class="st">"totalPages"</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>header <span class="ot">&lt;-</span> <span class="fu">div</span>(</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">style =</span> <span class="st">"font-size: 4pt; text-align: right; width: 100%; padding-right: 12pt;"</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">#span(class = "pageNumber"), "/", span(class = "totalPages")</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">span</span>(<span class="st">""</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>pagedown<span class="sc">::</span><span class="fu">chrome_print</span>(<span class="fu">paste0</span>(<span class="st">'AE_Vis_'</span>,<span class="fu">Sys.Date</span>(),<span class="st">'.html'</span>),</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>                       <span class="at">options=</span><span class="fu">list</span>(</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>                         <span class="at">printBackground=</span><span class="cn">TRUE</span>,</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>                         <span class="at">displayHeaderFooter =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>                         <span class="at">footerTemplate =</span> <span class="fu">format</span>(footer, <span class="at">indent =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>                         <span class="at">headerTemplate =</span> <span class="fu">format</span>(header, <span class="at">indent =</span> <span class="cn">FALSE</span>)),</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>                       <span class="at">output=</span><span class="fu">paste0</span>(<span class="st">'AE_Vis_'</span>,<span class="fu">Sys.Date</span>(),<span class="st">'.pdf'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 
 
-<div class="hidden" aria-hidden="true">
-<span class="glightbox-desc lightbox-desc-1">Simple consort diagram from <a href="https://tgerke.github.io/ggconsort" class="uri">https://tgerke.github.io/ggconsort</a></span>
-<span class="glightbox-desc lightbox-desc-2">CONSORT diagram showing two strata (site, sex) and randomization group assignments</span>
-</div>
 </section>
 
 </main> <!-- /main -->
@@ -842,31 +1000,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","loop":false,"descPosition":"bottom","selector":".lightbox","openEffect":"zoom"});
-window.onload = () => {
-  lightboxQuarto.on('slide_before_load', (data) => {
-    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
-    const href = trigger.getAttribute('href');
-    if (href !== null) {
-      const imgEl = window.document.querySelector(`a[href="${href}"] img`);
-      if (imgEl !== null) {
-        const srcAttr = imgEl.getAttribute("src");
-        if (srcAttr && srcAttr.startsWith("data:")) {
-          slideConfig.href = srcAttr;
-        }
-      }
-    } 
-  });
-
-  lightboxQuarto.on('slide_after_load', (data) => {
-    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
-    if (window.Quarto?.typesetMath) {
-      window.Quarto.typesetMath(slideNode);
-    }
-  });
-
-};
-          </script>
 
 
 

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>IU BHDS Visualization Gallery - Raincloud Plots</title>
+<title>IU BHDS Visualization Gallery - Enrollment Tracking</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -143,7 +143,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./enrollment.html">Visualization Guides</a></li><li class="breadcrumb-item"><a href="./raincloud.html">Raincloud Plots</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Enrollment Tracking</li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -180,7 +180,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./raincloud.html" class="sidebar-item-text sidebar-link active">
+  <a href="./raincloud.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Raincloud Plots</span></a>
   </div>
 </li>
@@ -188,6 +188,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="./consort.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">CONSORT Diagrams</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ae_vis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Adverse Event Plots</span></a>
   </div>
 </li>
       </ul>
@@ -220,17 +226,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">Background</a></li>
-  <li><a href="#enter-the-raincloud-plot" id="toc-enter-the-raincloud-plot" class="nav-link" data-scroll-target="#enter-the-raincloud-plot">Enter The Raincloud Plot</a></li>
-  <li><a href="#code" id="toc-code" class="nav-link" data-scroll-target="#code">Code</a></li>
+  <li><a href="#data-structure" id="toc-data-structure" class="nav-link" data-scroll-target="#data-structure">Data Structure</a></li>
+  <li><a href="#general-variable-list" id="toc-general-variable-list" class="nav-link" data-scroll-target="#general-variable-list">General Variable List</a></li>
+  <li><a href="#recruitment-plot" id="toc-recruitment-plot" class="nav-link" data-scroll-target="#recruitment-plot">Recruitment Plot</a></li>
+  <li><a href="#population-pyramid" id="toc-population-pyramid" class="nav-link" data-scroll-target="#population-pyramid">Population Pyramid</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./enrollment.html">Visualization Guides</a></li><li class="breadcrumb-item"><a href="./raincloud.html">Raincloud Plots</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Raincloud Plots</h1>
+<h1 class="title">Enrollment Tracking</h1>
 </div>
 
 
@@ -247,238 +255,229 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Resources
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Much of the content below comes from Cedric Scherer, a visualization and design expert known for many things, including his work with ggplot2. Find his work here: <a href="https://www.cedricscherer.com/" class="uri">https://www.cedricscherer.com/</a>, and his blog on raincloud plots here: <a href="https://www.cedricscherer.com/2021/06/06/visualizing-distributions-with-raincloud-plots-and-how-to-create-them-with-ggplot2/#back1" class="uri">https://www.cedricscherer.com/2021/06/06/visualizing-distributions-with-raincloud-plots-and-how-to-create-them-with-ggplot2/#back1</a></p>
-</div>
-</div>
 <section id="background" class="level3">
 <h3 class="anchored" data-anchor-id="background">Background</h3>
-<p>Rain cloud plots were officially introduced in 2019 (<a href="https://wellcomeopenresearch.org/articles/4-63" class="uri">https://wellcomeopenresearch.org/articles/4-63</a>) as an approach to overcome issues of hiding the true data distribution when plotting in typical charts such as box plots. Instead, raincloud plots combine several chart types to visualize the raw data, the distribution of the data as density, and key summary statistics at the same time.</p>
-<section id="box-plots" class="level4">
-<h4 class="anchored" data-anchor-id="box-plots">Box Plots</h4>
-<p>Box plots are used often in our type of work for summary statistics/reports, but they have limitations.</p>
+<p>Often in our projects there will be a potential need to track study recruitment, and provide some descriptive information on the study cohort. Below are examples of some of the ways this can be done easily in R. If there are plots you would like to produce and need assistance, or have code that you think would be useful to the group please email <a href="mailto:browstev@iu.edu">browstev@iu.edu</a> with your suggestions!</p>
+</section>
+<section id="data-structure" class="level3">
+<h3 class="anchored" data-anchor-id="data-structure">Data Structure</h3>
+<p>To replicate the plots below, you would need to structure your data similarly to the following format. A test dataset is available to download <a href="./EnrollReport_Input_Example.xlsx">here</a></p>
+</section>
+<section id="general-variable-list" class="level3">
+<h3 class="anchored" data-anchor-id="general-variable-list">General Variable List</h3>
+<p>The variables listed below will generally be useful to provide a good summary of the study population/</p>
+<table class="table">
+<colgroup>
+<col style="width: 32%">
+<col style="width: 29%">
+<col style="width: 38%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>id</td>
+<td>Numeric or Alphanumeric</td>
+<td>Unique, anonymous, patient identifier. This can be in any project-specific format. <em>Required in all rows</em></td>
+</tr>
+<tr class="even">
+<td>enrol_d</td>
+<td>Date (yyyy-mm-dd)</td>
+<td>Date of enrollment. Must be in specified format. <em>Required in all rows</em></td>
+</tr>
+<tr class="odd">
+<td>target</td>
+<td>Integer</td>
+<td>Study enrollment target. <em>Should be the same value in every row.</em></td>
+</tr>
+<tr class="even">
+<td>start_d</td>
+<td>Date (yyyy-mm-dd)</td>
+<td>Start date of study enrollment. <em>Should be the same value in every row.</em></td>
+</tr>
+<tr class="odd">
+<td>end_d</td>
+<td>Date (yyyy-mm-dd)</td>
+<td>End date of study enrollment. <em>Should be the same value in every row.</em></td>
+</tr>
+<tr class="even">
+<td>age</td>
+<td>Numeric (integer or decimal)</td>
+<td><em>Leave blank if unknown</em></td>
+</tr>
+<tr class="odd">
+<td>sex</td>
+<td>M/F/O</td>
+<td>Biological sex at birth of patient. <em>Leave blank if unknown.</em> M, Male F, Female O, Other</td>
+</tr>
+<tr class="even">
+<td>race</td>
+<td>Numeric</td>
+<td>Follow standard coding from NIH. <em>Leave blank if unknown.</em> 1, American Indian or Alaska Native 2, Asian 3, Black or African American 5, Native Hawaiian or Other Pacific Islander 6, Unknown 7, White 8, Multi-racial 9, Other</td>
+</tr>
+<tr class="odd">
+<td>group</td>
+<td>Character or numeric (integer)</td>
+<td>To stratify overall report by group or generate individual group reports. This could be treatment versus control, multiple study sites, etc.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="recruitment-plot" class="level3">
+<h3 class="anchored" data-anchor-id="recruitment-plot">Recruitment Plot</h3>
+<p>To track recruitment, specifically against a target, see below for an example. There are plenty of options to provide this information to your desired audience, this is just one potential option. This example creates a plot that includes longitudinal tracking of cumulative recruitment against a target, calculates a estimated metric of recruitment needed to meet target by the end of recruitment, and provides bars to show trend in weekly recruitment. Get creative and use this as a template to style a plot that best fits your study!</p>
 <div class="cell">
-<details class="code-fold">
-<summary>Display code to generate dummy data</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2021</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>grp1 <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">value =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">20</span>, <span class="at">length.out =</span> <span class="dv">75</span>), </span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">group =</span> <span class="st">"Group 1"</span>)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>grp2 <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">value =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">5</span>), <span class="fu">rnorm</span>(<span class="dv">20</span>, <span class="dv">2</span>, .<span class="dv">2</span>), <span class="fu">rnorm</span>(<span class="dv">50</span>, <span class="dv">6</span>, <span class="dv">1</span>), </span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">rnorm</span>(<span class="dv">50</span>, <span class="fl">14.5</span>, <span class="dv">1</span>), <span class="fu">rnorm</span>(<span class="dv">20</span>, <span class="dv">18</span>, .<span class="dv">2</span>), <span class="fu">rep</span>(<span class="dv">20</span>, <span class="dv">5</span>)), </span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">group =</span> <span class="st">"Group 2"</span>)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>grp3 <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">value =</span> <span class="fu">rep</span>(<span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">20</span>, <span class="at">length.out =</span> <span class="dv">5</span>), <span class="dv">5</span>), </span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>               <span class="at">group =</span> <span class="st">"Group 3"</span>)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>dummy <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(grp1, grp2, grp3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dummy, <span class="fu">aes</span>(<span class="at">x =</span> group, <span class="at">y =</span> value)) <span class="sc">+</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"grey92"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><a href="raincloud_files/figure-html/boxplots2-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" data-description="Basic
-
-Box
-
-Plot"><img src="raincloud_files/figure-html/boxplots2-1.png" class="img-fluid figure-img" width="672"></a></p>
-</figure>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">"EnrollReport_Input_Example.xlsx"</span>,  <span class="at">guess_max =</span> <span class="dv">1000</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 9
+     id enrol_d    target start_d    end_d        age sex    race group         
+  &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;         
+1     1 2020-03-17    150 2020-03-01 2021-01-01    52 M         9 Treatment Gro…
+2     2 2020-03-17    150 2020-03-01 2021-01-01    40 M         8 Treatment Gro…
+3     3 2020-03-17    150 2020-03-01 2021-01-01    50 M         5 Control Group 
+4     4 2020-03-18    150 2020-03-01 2021-01-01    19 M         1 Third Group   
+5     5 2020-03-22    150 2020-03-01 2021-01-01    57 F         3 Control Group 
+6     6 2020-04-21    150 2020-03-01 2021-01-01    39 F         7 Treatment Gro…</code></pre>
 </div>
 </div>
-</div>
-<p>The above plot summarizes the data by group, but does this give a complete picture of the data?</p>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Box Plot Interpretation
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li><strong>Questions:</strong>
-<ul>
-<li>How many observations in each group?</li>
-<li>Are distribution patterns across the groups similar?</li>
-</ul></li>
-<li><strong>How can we improve this visualization?</strong>
-<ul>
-<li>Add raw data</li>
-<li>Add overall distribution</li>
-</ul></li>
-</ul>
-</div>
-</div>
-</section>
-</section>
-<section id="enter-the-raincloud-plot" class="level3">
-<h3 class="anchored" data-anchor-id="enter-the-raincloud-plot">Enter The Raincloud Plot</h3>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="yesno.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" data-glightbox="description: .lightbox-desc-2" title="Cedric Scherer shared this post about his feelings on box plots versus raincloud plots"><img src="yesno.png" class="img-fluid figure-img" alt="Cedric Scherer shared this post about his feelings on box plots versus raincloud plots"></a></p>
-<figcaption>Cedric Scherer shared this post about his feelings on box plots versus raincloud plots</figcaption>
-</figure>
-</div>
-<p>Raincloud plots can be used to visualize raw data, the distribution of the data, and key summary statistics at the same time. These comprise of multiple plots added together, consisting of a halved violin plot, a box plot, and the raw data as some kind of scatter plot.</p>
-<p>We’ll use 3 distinct elements to make these plots as noted above, leveraging 3 different R packages:</p>
-<ol type="1">
-<li>ggplot2</li>
-<li>ggdist</li>
-<li>ggbeeswarm</li>
-</ol>
-</section>
-<section id="code" class="level3">
-<h3 class="anchored" data-anchor-id="code">Code</h3>
-<section id="basic-version" class="level4">
-<h4 class="anchored" data-anchor-id="basic-version">Basic Version</h4>
 <div class="cell">
 <details open="" class="code-fold">
-<summary>Display/Hide code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> penguins</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(pp, <span class="fu">aes</span>(<span class="at">x =</span> species, <span class="at">y =</span> bill_length_mm)) <span class="sc">+</span> </span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  ggdist<span class="sc">::</span><span class="fu">stat_halfeye</span>(</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">adjust =</span> .<span class="dv">5</span>, </span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">width =</span> .<span class="dv">6</span>, </span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">.width =</span> <span class="dv">0</span>, </span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">justification =</span> <span class="sc">-</span>.<span class="dv">2</span>, </span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">point_colour =</span> <span class="cn">NA</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> </span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">width =</span> .<span class="dv">15</span>, </span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">outlier.shape =</span> <span class="cn">NA</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  ggbeeswarm<span class="sc">::</span><span class="fu">geom_quasirandom</span>(</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">shape=</span><span class="dv">21</span>,</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">width=</span>.<span class="dv">2</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<summary>Display/Hide plot code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#format data as necessary</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>enrolldata <span class="ot">&lt;-</span> df  <span class="sc">|&gt;</span>  </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">enrol_d=</span><span class="fu">as.Date</span>(enrol_d)) <span class="sc">|&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sex=</span><span class="fu">toupper</span>(sex)) <span class="sc">|&gt;</span> </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age=</span><span class="fu">as.numeric</span>(<span class="fu">floor</span>(age))) <span class="sc">|&gt;</span> </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">enrol_w=</span><span class="fu">floor_date</span>(<span class="fu">as.Date</span>(enrol_d), <span class="st">"week"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">start_d=</span><span class="fu">as.Date</span>(start_d)) <span class="sc">|&gt;</span> </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">end_d=</span><span class="fu">as.Date</span>(end_d)) <span class="sc">|&gt;</span> </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">interval=</span><span class="fu">interval</span>(start_d, end_d) ) <span class="sc">|&gt;</span> </span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">avg=</span> <span class="fu">max</span>(target) <span class="sc">/</span> <span class="fu">time_length</span>(interval, <span class="at">unit=</span><span class="st">"days"</span>) ) <span class="sc">|&gt;</span> </span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">interval2=</span><span class="fu">interval</span>(<span class="fu">max</span>(<span class="fu">as.Date</span>(enrol_d)), <span class="fu">as.Date</span>(end_d)) ) <span class="sc">|&gt;</span> </span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">weeksleft=</span><span class="fu">time_length</span>(interval2, <span class="at">unit=</span><span class="st">"weeks"</span>) ) <span class="sc">|&gt;</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(interval, interval2))</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">#calculate total number of IDs</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>totalids <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">n_distinct</span>(enrolldata<span class="sc">$</span>id))</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co">#calculate count per week and cumulative sum</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>count <span class="ot">&lt;-</span> enrolldata <span class="sc">|&gt;</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(enrol_w) <span class="sc">|&gt;</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">n</span>()) </span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>cumsum <span class="ot">&lt;-</span> count <span class="sc">|&gt;</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">cumsum =</span> <span class="fu">cumsum</span>(count)) </span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>totenrol <span class="ot">&lt;-</span> <span class="fu">cbind</span>(count, cumsum)</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="co">#calculate date range and the recruitment metric</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>daterange <span class="ot">&lt;-</span> enrolldata <span class="sc">|&gt;</span> </span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">complete</span>(<span class="at">enrol_d=</span> <span class="fu">seq.Date</span>(<span class="fu">min</span>(start_d), <span class="fu">max</span>(end_d), <span class="at">by=</span><span class="st">"day"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">avg=</span><span class="fu">max</span>(enrolldata<span class="sc">$</span>avg)) <span class="sc">|&gt;</span> </span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(enrol_d) <span class="sc">|&gt;</span> </span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">avg=</span><span class="fu">max</span>(avg)) <span class="sc">|&gt;</span> </span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">cumavg=</span><span class="fu">cumsum</span>(avg))</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>goalavg <span class="ot">&lt;-</span> <span class="fu">round</span>( ( <span class="fu">as.numeric</span>(<span class="fu">max</span>(enrolldata<span class="sc">$</span>target)) <span class="sc">-</span> <span class="fu">as.numeric</span>(<span class="fu">max</span>(cumsum<span class="sc">$</span>cumsum, <span class="at">na.rm =</span>T)) ) <span class="sc">/</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">max</span>(enrolldata<span class="sc">$</span>weeksleft), <span class="dv">1</span>)</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>accent1 <span class="ot">&lt;-</span> RColorBrewer<span class="sc">::</span><span class="fu">brewer.pal</span>(<span class="dv">5</span>, <span class="st">"Dark2"</span>)</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>plot <span class="ot">&lt;-</span>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data=</span>totenrol, <span class="fu">aes</span>(<span class="at">x=</span>enrol_w, <span class="at">y=</span>cumsum), <span class="at">linetype=</span><span class="st">"solid"</span>, <span class="at">color=</span>accent1[<span class="dv">4</span>]  )<span class="sc">+</span> </span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data=</span>daterange, <span class="fu">aes</span>(<span class="at">x=</span>enrol_d, <span class="at">y=</span>cumavg), <span class="at">linetype=</span><span class="st">"dashed"</span>)<span class="sc">+</span></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>totenrol, <span class="fu">aes</span>(<span class="at">x=</span>enrol_w, <span class="at">y=</span>cumsum), <span class="at">size =</span> <span class="fl">1.5</span>, <span class="at">color=</span>accent1[<span class="dv">4</span>]) <span class="sc">+</span></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">data=</span>totenrol, <span class="at">stat=</span><span class="st">"identity"</span>,  <span class="at">fill=</span><span class="st">"grey50"</span>, <span class="at">alpha=</span><span class="fl">0.8</span>, <span class="at">color=</span><span class="st">"black"</span>, <span class="fu">aes</span>(<span class="at">x=</span>enrol_w, <span class="at">y=</span>count))<span class="sc">+</span></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_date</span>(<span class="at">date_labels=</span><span class="st">"%b-%y"</span>, <span class="at">breaks=</span><span class="fu">pretty_breaks</span>())<span class="sc">+</span></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">pretty_breaks</span>())<span class="sc">+</span></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Enrollment  Date"</span>) <span class="sc">+</span> </span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Number Enrolled"</span>) <span class="sc">+</span> </span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="fu">paste0</span>(<span class="st">"Overall Weekly Enrollment Actual vs. Target (N="</span>,totalids, <span class="st">")"</span> ), </span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="fu">paste0</span>(<span class="st">"Note: Based on data available, an average of "</span>, goalavg, <span class="st">" patients need to be recruited per week to meet enrollment target."</span>) ) <span class="sc">+</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()<span class="sc">+</span></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="dv">0</span>), </span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position=</span><span class="st">"none"</span>, </span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">9</span>), </span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">hjust=</span><span class="dv">0</span>)) </span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><a href="raincloud_files/figure-html/rcbasic-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" data-description="Basic
+<p><a href="enrollment_files/figure-html/unnamed-chunk-2-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" data-description="Study
 
-Raincloud
+Recruitment
 
-Plot"><img src="raincloud_files/figure-html/rcbasic-1.png" class="img-fluid figure-img" width="672"></a></p>
+Plot"><img src="enrollment_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></a></p>
 </figure>
 </div>
 </div>
 </div>
-<p>This basic plot gives us much more information, and doesn’t look bad at all. However, the formatting possibilities are endless! Using these separate plots allow maximum flexibility to fit your use case.</p>
 </section>
-<section id="addtional-formatting-applied" class="level4">
-<h4 class="anchored" data-anchor-id="addtional-formatting-applied">Addtional Formatting Applied</h4>
-<div class="cell" data-code-link="true" data-code-block-bg="true" data-code-block-border-left="#31BAE9">
+<section id="population-pyramid" class="level3">
+<h3 class="anchored" data-anchor-id="population-pyramid">Population Pyramid</h3>
+<p>Many studies recruit based on some weighting schema, often based on age and sex. To quickly view recruitment metrics across 2 characteristics such as these, try this visulaization often referred to as a “population pyramid” or “age-sex pyramid”. There are packages that produce these plots quickly, but using ggplot2 allows for better customization, if you like that sort of thing.</p>
+<div class="cell">
 <details open="" class="code-fold">
-<summary>Display code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>new_labels <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Adelie"</span><span class="ot">=</span><span class="st">"ADELIE"</span>,</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                      <span class="st">"Gentoo"</span><span class="ot">=</span><span class="st">"GENTOO"</span>,</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                      <span class="st">"Chinstrap"</span><span class="ot">=</span><span class="st">"CHINSTRAP"</span>)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>pal <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"#FF8C00"</span>, <span class="st">"#A034F0"</span>, <span class="st">"#159090"</span>)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>rcplot <span class="ot">&lt;-</span> <span class="cf">function</span>(titletext, captext){</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(pp, <span class="fu">aes</span>(<span class="at">x=</span>species, <span class="at">y=</span>bill_length_mm, <span class="at">fill=</span>species)) <span class="sc">+</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  ggdist<span class="sc">::</span><span class="fu">stat_halfeye</span>(</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">adjust =</span> .<span class="dv">5</span>, </span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">width =</span> <span class="fl">1.0</span>, </span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">.width =</span> <span class="dv">0</span>, </span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">justification =</span> <span class="sc">-</span><span class="fl">0.3</span>, </span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">point_colour =</span> <span class="cn">NA</span>,</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">alpha=</span><span class="fl">0.6</span>)<span class="sc">+</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">width=</span><span class="fl">0.4</span>, <span class="at">color=</span><span class="st">"black"</span>, <span class="at">outlier.shape =</span> <span class="cn">NA</span>, <span class="at">alpha=</span>.<span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  ggbeeswarm<span class="sc">::</span><span class="fu">geom_quasirandom</span>(<span class="fu">aes</span>(<span class="at">color=</span>species),</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">shape=</span><span class="dv">21</span>,                           </span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">2</span>,</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.3</span>,</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">width =</span> .<span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">''</span>, </span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">'Bill Length (mm)'</span>, </span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> titletext, </span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> captext,</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Gorman KB, Williams TD, Fraser WR (2014)"</span></span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>       )<span class="sc">+</span></span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> pal, <span class="at">guide =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> pal, <span class="at">guide =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="at">cols=</span><span class="fu">vars</span>(species), <span class="at">scales=</span><span class="st">"free_x"</span>, <span class="at">labeller =</span> <span class="fu">labeller</span>(<span class="at">species=</span>new_labels))<span class="sc">+</span></span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>, </span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_blank</span>(), </span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">14</span>, <span class="at">face=</span><span class="st">"bold"</span>),</span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">10</span>, <span class="at">lineheight =</span> <span class="fl">0.5</span> ), </span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>, <span class="at">face=</span><span class="st">"plain"</span>), </span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>, <span class="at">face=</span><span class="st">"plain"</span>), </span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x=</span><span class="fu">element_blank</span>(),</span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks.x=</span><span class="fu">element_blank</span>())<span class="sc">+</span></span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">strip.background =</span><span class="fu">element_rect</span>(<span class="at">fill=</span><span class="st">'white'</span>))</span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>plot <span class="ot">&lt;-</span> <span class="fu">rcplot</span>(<span class="fu">paste0</span>(<span class="st">"Figure 1. Bill Length by Species (n="</span>, <span class="fu">as.numeric</span>(<span class="fu">length</span>(<span class="fu">na.omit</span>(pp<span class="sc">$</span>bill_length_mm))) , <span class="st">")"</span>),</span>
-<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Bill Length in mm by species from the palmer penguins dataset"</span>)</span>
-<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<summary>Display/Hide plot code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>enrolldata<span class="sc">$</span>sex <span class="ot">&lt;-</span> <span class="fu">ordered</span>(enrolldata<span class="sc">$</span>sex, <span class="at">levels=</span> <span class="fu">c</span>(<span class="st">'F'</span>, <span class="st">'M'</span>, <span class="st">'O'</span>), <span class="at">labels=</span><span class="fu">c</span>(<span class="st">'Female'</span>, <span class="st">'Male'</span>, <span class="st">'Other'</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>sexdist <span class="ot">&lt;-</span> enrolldata <span class="sc">%&gt;%</span> </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(age)) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">agebin =</span> <span class="fu">cut</span>(age, <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">40</span>, <span class="dv">50</span>, <span class="dv">60</span>, <span class="dv">70</span>),  </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>                       <span class="fu">c</span>(<span class="st">"0-10"</span>, <span class="st">"11-20"</span>, <span class="st">"21-30"</span>, <span class="st">"31-40"</span>, <span class="st">"41-50"</span>, <span class="st">"51-60"</span>, <span class="st">"61-70"</span> ))) <span class="sc">|&gt;</span> </span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(sex<span class="sc">==</span><span class="st">"Male"</span> <span class="sc">|</span> sex<span class="sc">==</span><span class="st">"Female"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(sex, agebin) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count=</span><span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">count =</span> <span class="fu">ifelse</span>(sex <span class="sc">==</span> <span class="st">"Female"</span>,count, <span class="sc">-</span><span class="dv">1</span><span class="sc">*</span>count)) </span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>breaks_values <span class="ot">&lt;-</span> <span class="fu">pretty</span>(<span class="sc">-</span><span class="fu">max</span>(sexdist<span class="sc">$</span>count)<span class="sc">:</span><span class="fu">max</span>(sexdist<span class="sc">$</span>count))</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>sexhist <span class="ot">&lt;-</span> sexdist <span class="sc">%&gt;%</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> agebin, <span class="at">y =</span> count, <span class="at">fill =</span> sex))<span class="sc">+</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">color=</span><span class="st">"black"</span>, <span class="at">alpha=</span><span class="fl">0.75</span>)<span class="sc">+</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span><span class="fu">abs</span>(count)), <span class="at">position=</span><span class="fu">position_stack</span>(<span class="at">vjust=</span><span class="fl">0.5</span>), <span class="at">color=</span><span class="st">"black"</span>,<span class="at">size=</span><span class="dv">3</span>)<span class="sc">+</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()<span class="sc">+</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fu">max</span>(sexdist<span class="sc">$</span>count),<span class="fu">max</span>(sexdist<span class="sc">$</span>count)),</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>                     <span class="at">breaks =</span> breaks_values,</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">abs</span>(breaks_values) )<span class="sc">+</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>)<span class="sc">+</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette=</span><span class="st">"Dark2"</span>)<span class="sc">+</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Age (5 year bin)"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Number Enrolled"</span>)<span class="sc">+</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Enrollment by Sex and Age"</span>, <span class="at">subtitle=</span><span class="st">"Note: Includes Male and Female Only"</span>) <span class="sc">+</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()<span class="sc">+</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="dv">0</span>), <span class="at">legend.position=</span><span class="st">"right"</span>, <span class="at">legend.title =</span> <span class="fu">element_blank</span>(), </span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">9</span>), <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">hjust=</span><span class="dv">0</span>)) </span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sexhist)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><a href="raincloud_files/figure-html/unnamed-chunk-1-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" data-description="Styled
+<p><a href="enrollment_files/figure-html/unnamed-chunk-3-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" data-description="Age/Sex
 
-Raincloud
+Distribution
 
-Plot"><img src="raincloud_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></a></p>
+via
+
+a
+
+Pyramid
+
+Plot"><img src="enrollment_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></a></p>
 </figure>
 </div>
 </div>
 </div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Use caution when considering color. If reports will be consumed electronically, colors like used above would be acceptable. However, in some cases, say if reports will be printed, using a color scheme of sequential blues (for example) would save sites/project teams ink usage and be most user friendly. See below for a custom blue scale that has worked well when sending reports to resource limited settings where printed reports are used.</p>
-</div>
-</div>
-<div class="cell" data-code-link="true" data-code-block-bg="true" data-code-block-border-left="#31BAE9">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>BLUE_0 <span class="ot">&lt;-</span> <span class="st">"#dbe3ed"</span> </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>BLUE_25 <span class="ot">&lt;-</span> <span class="st">"#b3c4e0"</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>BLUE_50 <span class="ot">&lt;-</span><span class="st">"#788dae"</span>  </span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>BLUE_75 <span class="ot">&lt;-</span> <span class="st">"#5a7296"</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>BLUE_99 <span class="ot">&lt;-</span>  <span class="st">"#3c567d"</span> </span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>BLUE_100 <span class="ot">&lt;-</span>  <span class="st">"#334b6e"</span> </span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>NAGRAY <span class="ot">&lt;-</span> <span class="st">"#cccccc"</span> <span class="co"># GRAY for NA values</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 
 
-<div class="hidden" aria-hidden="true">
-<span class="glightbox-desc lightbox-desc-2">Cedric Scherer shared this post about his feelings on box plots versus raincloud plots</span>
-</div>
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -1014,7 +1013,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","loop":false,"selector":".lightbox","closeEffect":"zoom","descPosition":"bottom"});
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","loop":false,"descPosition":"bottom","closeEffect":"zoom","openEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

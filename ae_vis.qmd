@@ -148,3 +148,32 @@ for(i in 1:n_pages(vis)){
 
 ```
 ![](Example AE Plot.png){width=60%}
+### PDF Output
+
+Add the code to the end of your .RMD file to convert the HTML output into a PDF.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Convert HTML to PDF"
+#| eval: false
+
+footer <- div(
+  style = "font-size: 8pt; text-align: right; width: 100%; padding-right: 12pt; font-family:TimesNewRoman",
+  span(class = "pageNumber"), "/", span(class = "totalPages")
+)
+
+header <- div(
+  style = "font-size: 4pt; text-align: right; width: 100%; padding-right: 12pt;",
+  #span(class = "pageNumber"), "/", span(class = "totalPages")
+  span("")
+)
+
+pagedown::chrome_print(paste0('AE_Vis_',Sys.Date(),'.html'),
+                       options=list(
+                         printBackground=TRUE,
+                         displayHeaderFooter = TRUE, 
+                         footerTemplate = format(footer, indent = FALSE),
+                         headerTemplate = format(header, indent = FALSE)),
+                       output=paste0('AE_Vis_',Sys.Date(),'.pdf'))
+```
+
