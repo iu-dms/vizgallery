@@ -73,7 +73,7 @@ head(df)
 
 ```{r}
 #| code-fold: show
-#| code-summary: "Display/Hide plot code"
+#| code-summary: "Display/Hide AE plot code"
 #| eval: false
 #| lightbox:
 #|   description: Adverse Event Plot
@@ -147,14 +147,18 @@ for(i in 1:n_pages(vis)){
 
 
 ```
-![](Example AE Plot.png){width=60%}
+#### Output Plot Example
+
+![](Example AE Plot.png){.lightbox width=60%}
+\
+
 ### PDF Output
 
 Add the code to the end of your .RMD file to convert the HTML output into a PDF.
 
 ```{r}
-#| code-fold: true
-#| code-summary: "Convert HTML to PDF"
+#| code-fold: show
+#| code-summary: "Display/Hide HTML to PDF code"
 #| eval: false
 
 footer <- div(

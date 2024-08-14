@@ -75,6 +75,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -227,6 +230,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#variable-list" id="toc-variable-list" class="nav-link" data-scroll-target="#variable-list">Variable List</a></li>
   <li><a href="#package-list" id="toc-package-list" class="nav-link" data-scroll-target="#package-list">Package List</a></li>
   <li><a href="#input-file" id="toc-input-file" class="nav-link" data-scroll-target="#input-file">Input file</a></li>
+  <li><a href="#pdf-output" id="toc-pdf-output" class="nav-link" data-scroll-target="#pdf-output">PDF Output</a></li>
   </ul>
 </nav>
     </div>
@@ -369,7 +373,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="cell">
 <details open="" class="code-fold">
-<summary>Display/Hide plot code</summary>
+<summary>Display/Hide AE plot code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>datain <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(infile) <span class="sc">|&gt;</span> </span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(aestdate, aeendate, eosdate, enrolldate), <span class="sc">~</span> <span class="fu">as.Date</span>(.x, <span class="st">"%m/%d/%Y"</span> ))) <span class="sc">|&gt;</span> </span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(usubjid) <span class="sc">|&gt;</span> </span>
@@ -438,11 +442,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p><img src="Example AE Plot.png" class="img-fluid" style="width:60.0%"> ### PDF Output</p>
+<section id="output-plot-example" class="level4">
+<h4 class="anchored" data-anchor-id="output-plot-example">Output Plot Example</h4>
+<p><a href="Example AE Plot.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="Example AE Plot.png" class="img-fluid" style="width:60.0%"></a><br>
+</p>
+</section>
+</section>
+<section id="pdf-output" class="level3">
+<h3 class="anchored" data-anchor-id="pdf-output">PDF Output</h3>
 <p>Add the code to the end of your .RMD file to convert the HTML output into a PDF.</p>
 <div class="cell">
-<details class="code-fold">
-<summary>Convert HTML to PDF</summary>
+<details open="" class="code-fold">
+<summary>Display/Hide HTML to PDF code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>footer <span class="ot">&lt;-</span> <span class="fu">div</span>(</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">style =</span> <span class="st">"font-size: 8pt; text-align: right; width: 100%; padding-right: 12pt; font-family:TimesNewRoman"</span>,</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">span</span>(<span class="at">class =</span> <span class="st">"pageNumber"</span>), <span class="st">"/"</span>, <span class="fu">span</span>(<span class="at">class =</span> <span class="st">"totalPages"</span>)</span>
@@ -1000,6 +1011,31 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","closeEffect":"zoom","descPosition":"bottom","selector":".lightbox","loop":false});
+window.onload = () => {
+  lightboxQuarto.on('slide_before_load', (data) => {
+    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+    const href = trigger.getAttribute('href');
+    if (href !== null) {
+      const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+      if (imgEl !== null) {
+        const srcAttr = imgEl.getAttribute("src");
+        if (srcAttr && srcAttr.startsWith("data:")) {
+          slideConfig.href = srcAttr;
+        }
+      }
+    } 
+  });
+
+  lightboxQuarto.on('slide_after_load', (data) => {
+    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+    if (window.Quarto?.typesetMath) {
+      window.Quarto.typesetMath(slideNode);
+    }
+  });
+
+};
+          </script>
 
 
 
