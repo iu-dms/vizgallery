@@ -25,12 +25,13 @@ Variable	| Format	| Description
 usubjid	|Numeric or Alphanumeric	|Unique, anonymous, patient identifier. This can be in any project-specific format. _Required in all rows_
 aedecod	|Character	|Adverse event name.   _Required in all rows_
 aefinish	|Integer (Boolean)	|Has the adverse event concluded? 1=yes, 0=no. _Required in all rows_
-aesev	|Character	|Adverse event severity. _Required in all rows_
+aesev	|Integer	|Adverse event severity. Defaults to 1=Mild, 2=Moderate, 3=Severe, but this can be changed easily in script to accomodate any numeric sequence. _Required in all rows_
 aestdate	|Date (mm/dd/yyyy)	|Adverse event start date. Must be in specified format. _Required in all rows_
 aeendate	|Date (mm/dd/yyyy)	|Adverse event end date. Must be in specified format. _Required in all rows_
 aeseq	|Integer | Numeric sequence denoting chronological order. _Required in all rows_
 enrolldate	|Date (mm/dd/yyyy)	|Date participant enrolled into the study. _Required in all rows_
 eosdate	|Date (mm/dd/yyyy)	|Date participant exited the study, or date study ended. _Required in all rows_
+status | Integer | 0= OFF STUDY, 1= ON STUDY
 
 ### Package List
 
@@ -58,19 +59,28 @@ invisible(lapply(packages, library, character.only = TRUE))
 
 ### Input file
 
-See below for an example of the input file
+See below for an example of the input file:
 
 ```{r}
 #| code-fold: false
 #| code-summary: "Sample Data"
 #| warning: false
 
-infile="Sample AE Data_v2.csv"
+infile="Sample AE Data.csv"
 
 df <- read.csv(infile)
 head(df)
 ```
 
+### TLDR
+
+::: {.callout-tip title="Template R Markdown File"}
+If you want to download a template R Markdown file that includes the code below, please use this link: [Template .Rmd File](./AE_Vis.Rmd){.external target="_blank"}. The file is set to work with the sample dataset, and would require small edits (as described below) to work with your own input file.
+:::
+
+
+### Data Processing
+The code below reads in the data file, processes data into the required formats and calculates additional fields needed for the visualization. Next the data frame is transposed into a structure to better
 ```{r}
 #| code-fold: show
 #| code-summary: "Display/Hide AE plot code"
@@ -82,26 +92,70 @@ datain <- read.csv(infile) |>
   mutate(across(c(aestdate, aeendate, eosdate, enrolldate), ~ as.Date(.x, "%m/%d/%Y" ))) |> 
   group_by(usubjid) |> 
   mutate(aeendate=if_else(is.na(aeendate), eosdate , as.Date(aeendate))) |> 
-  mutate(ae_days=if_else(!is.na(aeendate), as.numeric(as.Date(aeendate, "%m/%d/%Y")-as.Date(aestdate, "%m/%d/%Y"))+1, NA_integer_)) |> 
-  mutate(ae_event=paste0(aedecod, " (", aeseq, ")" ))
+  mutate(ae_days=if_else(!is.na(aeendate), 
+                         as.numeric(as.Date(aeendate, "%m/%d/%Y")-as.Date(aestdate, "%m/%d/%Y"))+1, 
+                         NA_integer_)) |> 
+  mutate(ae_event=paste0(aedecod, " (", aeseq, ")" )) |> 
+  mutate(cutdate=as.Date(Sys.Date()))
   
 datalong <- datain |> 
-  select(usubjid, ae_event, aesev, aeseq, aefinish, enrolldate, eosdate, aestdate, aeendate, ae_days ) |>
-  pivot_longer(cols = c(aestdate, aeendate), names_to = "date_type", values_to ="datevalue" ) |> 
+  select(usubjid, ae_event, aesev, aeseq, aefinish, enrolldate, eosdate, 
+         aestdate, aeendate, ae_days, cutdate ) |>
+  pivot_longer(cols = c(aestdate, aeendate), 
+               names_to = "date_type", 
+               values_to ="datevalue" ) |> 
   arrange(usubjid, desc(aeseq)) |> 
   ungroup()
+
+```
+
+Next, we create a factor for the severity column.
+
+::: {.callout-warning title="Note"}
+This section of could would need to be modified if your severity rating is different than in the example dataset as described above.
+:::
+
+
+```{r}
+#| code-fold: show
+#| code-summary: "Display/Hide AE plot code"
+#| eval: false
+#| lightbox:
+#|   description: Adverse Event Plot
+
+datalong$aesev <- ordered(datalong$aesev,
+                          levels = c(1,2,3),
+                          labels = c("Mild", "Moderate", "Severe"))
+```
+
+Next we create cross-sectional datasets for dates needed for the visualization, set functions to create the x-axis limits as well as the facet titles for each ID.
+```{r}
+#| code-fold: show
+#| code-summary: "Display/Hide AE plot code"
+#| eval: false
+#| lightbox:
+#|   description: Adverse Event Plot
+
 
 dataend <- datalong |> 
   filter(date_type=="aeendate")
 
 csdates <- datalong |> 
   group_by(usubjid) |> 
-  summarise(enrolldate=min(enrolldate, na.rm = T), eosdate=max(eosdate, na.rm=T), lastaeend=max(datevalue, na.rm=T))
-
+  summarise(enrolldate=min(enrolldate, na.rm = T), 
+            eosdate=max(eosdate, na.rm=T), 
+            lastaeend=max(datevalue, na.rm=T),
+            cutdate=max(cutdate, na.rm = T)) |> 
+  mutate(cutdate=if_else(is.infinite(eosdate), 
+                         as.Date(cutdate), 
+                         as.Date(eosdate)))
+  
 
 # Create list of arguments to set the x-axis scale for each ID
+# Will use cutdate below so we have an end point for patients still on study
 x_scale_lim <- csdates |>
-  str_glue_data("usubjid =={usubjid} ~ scale_x_date(limits = c(as.Date('{enrolldate}'), max(as.Date('{eosdate}'), as.Date('{lastaeend}')) ),
+  str_glue_data("usubjid =={usubjid} ~ scale_x_date(limits = c(as.Date('{enrolldate}'),
+                max(as.Date('{cutdate}'), as.Date('{lastaeend}'))  ),
                 date_labels = '%m/%d/%Y',
                expand =  expansion(mult = c(.25, .25)),
                breaks=pretty_breaks())") %>% 
@@ -111,27 +165,57 @@ x_scale_lim <- csdates |>
   eval()
 
 
-
 # Create label for facet strip
 id_labels <- as_labeller(function(x) paste0('Adverse Events for Subject ID = ', x ))
+```
 
+Finally we create the ggplot object and print the report!
+```{r}
+#| code-fold: show
+#| code-summary: "Display/Hide AE plot code"
+#| eval: false
+#| lightbox:
+#|   description: Adverse Event Plot
 
-#Generate main plot
-vis <- ggplot(datalong, aes(y=fct_reorder(ae_event, aeseq),  x=datevalue, color=aesev, label=paste0(" ", ae_days, "d"))) +
+# Structure Main Plot
+vis <- ggplot(datalong, 
+              aes(y=fct_reorder(ae_event, aeseq),  
+                  x=datevalue, 
+                  color=aesev, 
+                  label=paste0(" ", ae_days, "d"))) +
   geom_line(linewidth=5) +
-  facet_wrap_paginate(. ~ usubjid, ncol = 1, nrow=1, scales = "free", labeller = labeller(usubjid=id_labels)) + 
+  facet_wrap_paginate(. ~ usubjid, 
+                      ncol = 1, 
+                      nrow=1, 
+                      scales = "free", 
+                      labeller = labeller(usubjid=id_labels)) + 
   scale_color_manual(values = c("#1b9e77",  "#7570b3", "#d95f02"))+
-  geom_text(data=subset(dataend,aefinish == 1), size=3, color="black",  aes(hjust=0))+
-  geom_point(data=subset(dataend,aefinish == 0) , aes(x=datevalue,y=ae_event,fill=aesev, color=aesev, hjust=0, vjust=0),
+  geom_text(data=subset(dataend,aefinish == 1), 
+            size=3, 
+            color="black",  
+            aes(hjust=0))+
+  geom_point(data=subset(dataend,aefinish == 0) , 
+             aes(x=datevalue,y=ae_event,fill=aesev, color=aesev, hjust=0, vjust=0),
              shape="\u279c", size=6, show.legend = F) +
-  geom_point(data=subset(dataend,ae_days==1) , aes(x=datevalue,y=ae_event,fill=aesev, color=aesev, hjust=0, vjust=0),
+  geom_point(data=subset(dataend,ae_days==1) , 
+             aes(x=datevalue,y=ae_event,fill=aesev, color=aesev, hjust=0, vjust=0),
              shape="\u007c", size=4, show.legend = F) +
-  geom_vline(data=csdates, aes(xintercept=enrolldate), linetype=2, color="blue", alpha=0.4 ) +
-  geom_vline(data=csdates, aes(xintercept=eosdate), linetype=2, color="blue", alpha=0.4) +
+  geom_vline(data=csdates, 
+             aes(xintercept=enrolldate), 
+             linetype=2, 
+             color="blue", 
+             alpha=0.4 ) +
+  geom_vline(data=csdates, 
+             aes(xintercept=eosdate), 
+             linetype=2, 
+             color="blue", 
+             alpha=0.4) +
   labs(x=NULL, y=NULL, color="Severity")+
   theme_bw()+
-  theme(legend.position = "right", axis.text.x = element_text(angle = 45, hjust=1))
-   
+  theme(legend.position = "right", 
+        axis.text.x = element_text(angle = 45, hjust=1))
+  
+# Create pages for each unique ID to make the resulting file readable 
 for(i in 1:n_pages(vis)){
   p_out <-  vis + 
     facet_wrap_paginate(. ~ usubjid, 
@@ -145,34 +229,34 @@ for(i in 1:n_pages(vis)){
   print(p_out)
 }
 
-
 ```
-#### Output Plot Example
+### Output Plot Example
 
 ![](Example AE Plot.png){.lightbox width=60%}
 \
 
 ### PDF Output
 
-Add the code to the end of your .RMD file to convert the HTML output into a PDF.
+If you would like to convert your HTML output into a pdf, using the package *pagedown* is an easy way to do this. The code below provides a template to do so.
 
 ```{r}
 #| code-fold: show
 #| code-summary: "Display/Hide HTML to PDF code"
 #| eval: false
 
+#set footer to show page numbers
 footer <- div(
   style = "font-size: 8pt; text-align: right; width: 100%; padding-right: 12pt; font-family:TimesNewRoman",
   span(class = "pageNumber"), "/", span(class = "totalPages")
 )
 
+#set header to be blank
 header <- div(
   style = "font-size: 4pt; text-align: right; width: 100%; padding-right: 12pt;",
-  #span(class = "pageNumber"), "/", span(class = "totalPages")
   span("")
 )
 
-pagedown::chrome_print(paste0('AE_Vis_',Sys.Date(),'.html'),
+pagedown::chrome_print(paste0('<YOUR HTML FILE HERE>'), # paste0('AE_Vis_',Sys.Date(),'.html')
                        options=list(
                          printBackground=TRUE,
                          displayHeaderFooter = TRUE, 

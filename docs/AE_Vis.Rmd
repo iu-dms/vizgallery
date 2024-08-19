@@ -1,0 +1,166 @@
+---
+output:
+  html_document:
+      self_contained: true
+      theme: readable
+pagetitle: "AE Visualization"
+knit: (function(inputFile, encoding) {rmarkdown::render("AE_Vis.Rmd",
+      output_file=paste0('AE_Vis_',Sys.Date(),'.html'))})
+---
+
+<style type="text/css">
+
+h1 {
+  font-size: 24px;
+  color: DarkBlue;
+  text-align: left;
+     font-family:  'Source Sans Pro', sans-serif;
+}
+
+</style>
+
+# <b>Adverse Events by ID </b>
+<p style="text-align:left; color:black; font-size:16px;">Report generated on `r Sys.Date()`</p>
+
+##### <b><u>Summary</b></u>
+Adverse events for submitted IDs are included in the report below in separate plots. Adverse events are listed chronologically from bottom to top on the Y-axis with the sequential number of the event in parenthesis, e.g. "Headache (1)". Events with an end date are labelled with the duration in days (e.g. 19d indicates 19 days duration) and those without an end date are indicated by a right arrow at the end of the line (`r knitr::asis_output("\u279c")`). Vertical dotted lines display the study start (*enrolldate*) and study end (*eosdate*) date.
+\
+
+```{r, setup, include=FALSE}
+
+###set input data file
+infile <- "Sample AE Data.csv"
+
+#####################################################
+##Load/install necessary CRAN packages
+packages <- c("tidyverse", "ggplot2", "scales", "RColorBrewer", "forcats", 
+              "ggforce", "pagedown", "htmltools", "ggh4x")
+##Install packages not yet installed
+installed_packages <- packages %in% rownames(installed.packages())
+if (any(installed_packages == FALSE)) {
+  install.packages(packages[!installed_packages])
+}
+##Attach Packages
+invisible(lapply(packages, library, character.only = TRUE))
+
+#####################################################
+
+```
+
+```{r, processing, echo=FALSE, warning=FALSE, message=FALSE}
+
+datain <- read.csv(infile) |> 
+  mutate(across(c(aestdate, aeendate, eosdate, enrolldate), ~ as.Date(.x, "%m/%d/%Y" ))) |> 
+  group_by(usubjid) |> 
+  mutate(aeendate=if_else(is.na(aeendate), eosdate , as.Date(aeendate))) |> 
+  mutate(ae_days=if_else(!is.na(aeendate), 
+                         as.numeric(as.Date(aeendate, "%m/%d/%Y")-as.Date(aestdate, "%m/%d/%Y"))+1, 
+                         NA_integer_)) |> 
+  mutate(ae_event=paste0(aedecod, " (", aeseq, ")" )) |> 
+  mutate(cutdate=as.Date(Sys.Date()))
+  
+datalong <- datain |> 
+  select(usubjid, ae_event, aesev, aeseq, aefinish, enrolldate, eosdate, 
+         aestdate, aeendate, ae_days, cutdate ) |>
+  pivot_longer(cols = c(aestdate, aeendate), 
+               names_to = "date_type", 
+               values_to ="datevalue" ) |> 
+  arrange(usubjid, desc(aeseq)) |> 
+  ungroup()
+
+datalong$aesev <- ordered(datalong$aesev,
+                          levels = c(1,2,3),
+                          labels = c("Mild", "Moderate", "Severe"))
+
+dataend <- datalong |> 
+  filter(date_type=="aeendate")
+
+csdates <- datalong |> 
+  group_by(usubjid) |> 
+  summarise(enrolldate=min(enrolldate, na.rm = T), 
+            eosdate=max(eosdate, na.rm=T), 
+            lastaeend=max(datevalue, na.rm=T),
+            cutdate=max(cutdate, na.rm = T)) |> 
+  mutate(cutdate=if_else(is.infinite(eosdate), 
+                         as.Date(cutdate), 
+                         as.Date(eosdate)))
+  
+
+
+# Create list of arguments to set the x-axis scale for each ID
+# Will use cutdate below so we have an end point for patients still on study
+x_scale_lim <- csdates |>
+  str_glue_data("usubjid =={usubjid} ~ scale_x_date(limits = c(as.Date('{enrolldate}'),
+                max(as.Date('{cutdate}'), as.Date('{lastaeend}'))  ),
+                date_labels = '%m/%d/%Y',
+               expand =  expansion(mult = c(.25, .25)),
+               breaks=pretty_breaks())") %>% 
+  str_flatten(", ")  %>% 
+  str_c("list(", ., ")") %>% 
+  parse(text = .) %>% 
+  eval()
+
+
+
+# Create label for facet strip
+id_labels <- as_labeller(function(x) paste0('Adverse Events for Subject ID = ', x ))
+
+
+#Generate main plot
+vis <- ggplot(datalong, 
+              aes(y=fct_reorder(ae_event, aeseq),  
+                  x=datevalue, 
+                  color=aesev, 
+                  label=paste0(" ", ae_days, "d"))) +
+  geom_line(linewidth=5) +
+  facet_wrap_paginate(. ~ usubjid, 
+                      ncol = 1, 
+                      nrow=1, 
+                      scales = "free", 
+                      labeller = labeller(usubjid=id_labels)) + 
+  scale_color_manual(values = c("#1b9e77",  "#7570b3", "#d95f02"))+
+  geom_text(data=subset(dataend,aefinish == 1), 
+            size=3, 
+            color="black",  
+            aes(hjust=0))+
+  geom_point(data=subset(dataend,aefinish == 0) , 
+             aes(x=datevalue,y=ae_event,fill=aesev, color=aesev, hjust=0, vjust=0),
+             shape="\u279c", size=6, show.legend = F) +
+  geom_point(data=subset(dataend,ae_days==1) , 
+             aes(x=datevalue,y=ae_event,fill=aesev, color=aesev, hjust=0, vjust=0),
+             shape="\u007c", size=4, show.legend = F) +
+  geom_vline(data=csdates, 
+             aes(xintercept=enrolldate), 
+             linetype=2, 
+             color="blue", 
+             alpha=0.4 ) +
+  geom_vline(data=csdates, 
+             aes(xintercept=eosdate), 
+             linetype=2, 
+             color="blue", 
+             alpha=0.4) +
+  labs(x=NULL, y=NULL, color="Severity")+
+  theme_bw()+
+  theme(legend.position = "right", 
+        axis.text.x = element_text(angle = 45, hjust=1))
+   
+for(i in 1:n_pages(vis)){
+  p_out <-  vis + 
+    facet_wrap_paginate(. ~ usubjid, 
+                        ncol = 1, 
+                        nrow = 1, 
+                        page = i, 
+                        scales = "free", 
+                        labeller = labeller(usubjid=id_labels))+
+  ggh4x::facetted_pos_scales(x=x_scale_lim)
+  
+  print(p_out)
+}
+
+
+
+```
+
+
+
+

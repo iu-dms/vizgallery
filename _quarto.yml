@@ -1,6 +1,9 @@
 project:
   type: website
   output-dir: docs
+  render:
+    - "*.qmd"
+    - "!AE_Vis.Rmd"
   
 website:
   title: "IU BHDS Visualization Gallery"
