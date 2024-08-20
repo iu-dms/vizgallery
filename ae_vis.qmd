@@ -11,8 +11,7 @@ format:
 ---
 
 ### Background
-
-The following code can be useful if you need to plot adverse events (AE) by study participant. The provided R Markdown script will produce an HTML file containing one plot per ID, highlighting the AE duration across the study period. If your project has needs for additional variations of adverse event visualizations, please contact [browstev@iu.edu](mailto:browstev@iu.edu) with your suggestions!
+The following code can be useful if you need to plot adverse events (AE) by study participant. The provided R Markdown script will produce an HTML file containing one plot per ID, highlighting AE duration across the study period. If your project has needs for additional variations of adverse event visualizations, please contact [browstev@iu.edu](mailto:browstev@iu.edu) with your suggestions!
 
 ### Adverse Event Plot 
 
@@ -21,10 +20,9 @@ The following code can be useful if you need to plot adverse events (AE) by stud
 \
 
 ### Data Structure
+To replicate the AE plot described on this page with this code, you will need to provide a dataset using the exact structure below. A test dataset is available to download [here](./Sample AE Data.csv){.external target="_blank"} 
 
-To replicate the AE plot described below, you will need to provide your data exactly in the structure below. A test dataset is available to download [here](./Sample AE Data_v2.csv){.external target="_blank"} 
-
-### Variable List
+#### Variable List
 								
 Variable	| Format	| Description
 ----------|---------|------------
@@ -33,15 +31,40 @@ aedecod	|Character	|Adverse event name.   _Required in all rows_
 aefinish	|Integer (Boolean)	|Has the adverse event concluded? 1=yes, 0=no. _Required in all rows_
 aesev	|Integer	|Adverse event severity. Defaults to 1=Mild, 2=Moderate, 3=Severe, but this can be changed easily in script to accomodate any numeric sequence. _Required in all rows_
 aestdate	|Date (mm/dd/yyyy)	|Adverse event start date. Must be in specified format. _Required in all rows_
-aeendate	|Date (mm/dd/yyyy)	|Adverse event end date. Must be in specified format. _Required in all rows_
+aeendate	|Date (mm/dd/yyyy)	|Adverse event end date. Must be in specified format. _Can be left blank when ID is still on study (status=1)_
 aeseq	|Integer | Numeric sequence denoting chronological order. _Required in all rows_
 enrolldate	|Date (mm/dd/yyyy)	|Date participant enrolled into the study. _Required in all rows_
 eosdate	|Date (mm/dd/yyyy)	|Date participant exited the study, or date study ended. _Required in all rows_
 status | Integer | 0= OFF STUDY, 1= ON STUDY
 
-### Package Dependencies
 
-The code below is an efficient way to load packages at the beginning of a script. The below code includes all of the package dependencies for the AE visualization.
+#### Example Dataset
+See below for an example of the input file:
+
+```{r}
+#| code-fold: false
+#| code-summary: "Sample Data"
+#| warning: false
+
+infile="Sample AE Data.csv"
+df <- read.csv(infile)
+head(df)
+```
+
+### Complete R Markdown File
+
+::: {.callout-tip title="Template R Markdown File"}
+We have developed a template R Markdown file that is set to work with the sample dataset, and would only require small edits (as described below) to work with your own input file. The following sections on this page walk through some of the code highlights, and may help troubleshooting if you run into any issues modifying the code to fit your use case. You can download the R Markdown file using this link: [Template .Rmd File](./AE_Vis.Rmd){.external target="_blank"}
+
+In that file, you will need to change the path to the "infile" dataframe on **line 32**. This should be the path to your AE data file.
+:::
+
+
+### Code Walkthrough
+The following sections give a summary of the steps taken to process the input file and build the visualization. 
+
+#### Package Dependencies
+The code below is an efficient way to load packages at the beginning of an R script. The below code includes all of the package dependencies for the AE visualization code.
 
 ```{r setup}
 #| warning: false
@@ -60,33 +83,7 @@ if (any(installed_packages == FALSE)) {
 invisible(lapply(packages, library, character.only = TRUE))
 
 ```
-
-### Input file
-
-See below for an example of the input file:
-
-```{r}
-#| code-fold: false
-#| code-summary: "Sample Data"
-#| warning: false
-
-infile="Sample AE Data.csv"
-
-df <- read.csv(infile)
-head(df)
-```
-
-### Complete R Markdown File
-
-::: {.callout-tip title="Template R Markdown File"}
-We have developed a template R Markdown file that is set to work with the sample dataset, and would only require small edits (as described below) to work with your own input file. The below sections just walk through some of the code hihglights, and may help troubleshooting if you run into any issues modifying the code to fit your use case. You can download the file using this link: [Template .Rmd File](./AE_Vis.Rmd){.external target="_blank"}
-:::
-
-
-### Data Processing Walkthrough
-
-The following sections give a general idea of how the data is processed and used to build the visualization. 
-
+#### Data Wrangling
 First, we read in the data file, process the data into required formats and calculate additional fields needed for the visualization. Next the data frame is transposed into a longer structure.
 ```{r}
 #| code-fold: false
@@ -114,13 +111,12 @@ datalong <- datain |>
   ungroup()
 
 ```
-
+#### AE Severity Scale
 Next, we create a factor for the severity column.
 
-::: {.callout-warning title="Modifications"}
-This section of could would need to be modified if your severity rating is different than in the example dataset as described above. Also, the **scale_color_manual** line of code in the ggplot2 build (see below) would need to be modified to include more (or less) colors as applicable. See <https://r-graph-gallery.com/38-rcolorbrewers-palettes.html> for more description of the additional color palettes and <https://www.datanovia.com/en/blog/the-a-z-of-rcolorbrewer-palette/> for more ways to work with the *Rcolorbrewer* package.
+::: {.callout-warning title="Severity Scale Modifications"}
+This section would need to be modified if your severity rating is different than in the example dataset as described above. Also, the **scale_color_manual** line of code in the ggplot2 build (see below) would need to be modified to include more (or less) colors as applicable. See <https://r-graph-gallery.com/38-rcolorbrewers-palettes.html> for a description of color palettes and <https://www.datanovia.com/en/blog/the-a-z-of-rcolorbrewer-palette/> for more ways to work with the *Rcolorbrewer* package.
 :::
-
 
 ```{r}
 #| code-fold: false
@@ -132,8 +128,8 @@ datalong$aesev <- ordered(datalong$aesev,
                           levels = c(1,2,3),
                           labels = c("Mild", "Moderate", "Severe"))
 ```
-
-Next we create cross-sectional datasets for all dates needed for the visualization and create functions to calculate the x-axis limits per ID as well as the facet titles for each ID.
+#### Customizing the Visualization
+Next we create cross-sectional datasets for all dates needed for the visualization, arguments to calculate the x-axis limits per ID, and a function for custom facet titles for each ID.
 ```{r}
 #| code-fold: false
 #| eval: false
@@ -172,7 +168,7 @@ x_scale_lim <- csdates |>
 # Create label for facet strip
 id_labels <- as_labeller(function(x) paste0('Adverse Events for Subject ID = ', x ))
 ```
-
+#### Build it!
 Finally we create the ggplot object and print the report!
 ```{r}
 #| code-fold: false
@@ -235,12 +231,10 @@ for(i in 1:n_pages(vis)){
 ```
 
 ### PDF Output
-
 If you would like to convert your HTML output into a pdf, using the package *pagedown* is an easy way to do this. The code below provides a template to do so.
 
 ```{r}
-#| code-fold: show
-#| code-summary: "Display/Hide: HTML to PDF code"
+#| code-fold: false
 #| eval: false
 
 #set footer to show page numbers
