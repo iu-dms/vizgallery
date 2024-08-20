@@ -12,11 +12,17 @@ format:
 
 ### Background
 
-The following code can serve as a template (or finished product) for your projects if you need to plot adverse events by study participant. If your project has needs for additional variations of adverse event visualizations, please contact [browstev@iu.edu](mailto:browstev@iu.edu) with your suggestions!
+The following code can be useful if you need to plot adverse events (AE) by study participant. The provided R Markdown script will produce an HTML file containing one plot per ID, highlighting the AE duration across the study period. If your project has needs for additional variations of adverse event visualizations, please contact [browstev@iu.edu](mailto:browstev@iu.edu) with your suggestions!
+
+### Adverse Event Plot 
+
+![](Example AE Plot.png){.lightbox width=75%}
+
+\
 
 ### Data Structure
 
-To replicate the plots below, you will need to replicate the data structure below exactly. A test dataset is available to download [here](./Sample AE Data_v2.csv) 
+To replicate the AE plot described below, you will need to provide your data exactly in the structure below. A test dataset is available to download [here](./Sample AE Data_v2.csv){.external target="_blank"} 
 
 ### Variable List
 								
@@ -33,27 +39,25 @@ enrolldate	|Date (mm/dd/yyyy)	|Date participant enrolled into the study. _Requir
 eosdate	|Date (mm/dd/yyyy)	|Date participant exited the study, or date study ended. _Required in all rows_
 status | Integer | 0= OFF STUDY, 1= ON STUDY
 
-### Package List
+### Package Dependencies
 
-The code will automatically install/load these for you using the code chunk below
+The code below is an efficient way to load packages at the beginning of a script. The below code includes all of the package dependencies for the AE visualization.
 
 ```{r setup}
 #| warning: false
 #| code-fold: false
 
-#####################################################
-##Load/install necessary CRAN packages
-packages <- c("tidyverse", "ggplot2", "scales", "RColorBrewer", "forcats", "ggforce", "pagedown", "htmltools", "ggh4x")
+packages <- c("tidyverse", "ggplot2", "scales", "RColorBrewer", 
+              "forcats", "ggforce", "pagedown", "htmltools", "ggh4x")
+
 ##Install packages not yet installed
 installed_packages <- packages %in% rownames(installed.packages())
 if (any(installed_packages == FALSE)) {
   install.packages(packages[!installed_packages])
 }
-##Attach Packages
+
+##Load Packages
 invisible(lapply(packages, library, character.only = TRUE))
-
-#####################################################
-
 
 ```
 
@@ -72,18 +76,20 @@ df <- read.csv(infile)
 head(df)
 ```
 
-### TLDR
+### Complete R Markdown File
 
 ::: {.callout-tip title="Template R Markdown File"}
-If you want to download a template R Markdown file that includes the code below, please use this link: [Template .Rmd File](./AE_Vis.Rmd){.external target="_blank"}. The file is set to work with the sample dataset, and would require small edits (as described below) to work with your own input file.
+We have developed a template R Markdown file that is set to work with the sample dataset, and would only require small edits (as described below) to work with your own input file. The below sections just walk through some of the code hihglights, and may help troubleshooting if you run into any issues modifying the code to fit your use case. You can download the file using this link: [Template .Rmd File](./AE_Vis.Rmd){.external target="_blank"}
 :::
 
 
-### Data Processing
-The code below reads in the data file, processes data into the required formats and calculates additional fields needed for the visualization. Next the data frame is transposed into a structure to better
+### Data Processing Walkthrough
+
+The following sections give a general idea of how the data is processed and used to build the visualization. 
+
+First, we read in the data file, process the data into required formats and calculate additional fields needed for the visualization. Next the data frame is transposed into a longer structure.
 ```{r}
-#| code-fold: show
-#| code-summary: "Display/Hide AE plot code"
+#| code-fold: false
 #| eval: false
 #| lightbox:
 #|   description: Adverse Event Plot
@@ -111,14 +117,13 @@ datalong <- datain |>
 
 Next, we create a factor for the severity column.
 
-::: {.callout-warning title="Note"}
-This section of could would need to be modified if your severity rating is different than in the example dataset as described above.
+::: {.callout-warning title="Modifications"}
+This section of could would need to be modified if your severity rating is different than in the example dataset as described above. Also, the **scale_color_manual** line of code in the ggplot2 build (see below) would need to be modified to include more (or less) colors as applicable. See <https://r-graph-gallery.com/38-rcolorbrewers-palettes.html> for more description of the additional color palettes and <https://www.datanovia.com/en/blog/the-a-z-of-rcolorbrewer-palette/> for more ways to work with the *Rcolorbrewer* package.
 :::
 
 
 ```{r}
-#| code-fold: show
-#| code-summary: "Display/Hide AE plot code"
+#| code-fold: false
 #| eval: false
 #| lightbox:
 #|   description: Adverse Event Plot
@@ -128,10 +133,9 @@ datalong$aesev <- ordered(datalong$aesev,
                           labels = c("Mild", "Moderate", "Severe"))
 ```
 
-Next we create cross-sectional datasets for dates needed for the visualization, set functions to create the x-axis limits as well as the facet titles for each ID.
+Next we create cross-sectional datasets for all dates needed for the visualization and create functions to calculate the x-axis limits per ID as well as the facet titles for each ID.
 ```{r}
-#| code-fold: show
-#| code-summary: "Display/Hide AE plot code"
+#| code-fold: false
 #| eval: false
 #| lightbox:
 #|   description: Adverse Event Plot
@@ -171,8 +175,7 @@ id_labels <- as_labeller(function(x) paste0('Adverse Events for Subject ID = ', 
 
 Finally we create the ggplot object and print the report!
 ```{r}
-#| code-fold: show
-#| code-summary: "Display/Hide AE plot code"
+#| code-fold: false
 #| eval: false
 #| lightbox:
 #|   description: Adverse Event Plot
@@ -230,10 +233,6 @@ for(i in 1:n_pages(vis)){
 }
 
 ```
-### Output Plot Example
-
-![](Example AE Plot.png){.lightbox width=60%}
-\
 
 ### PDF Output
 
@@ -241,7 +240,7 @@ If you would like to convert your HTML output into a pdf, using the package *pag
 
 ```{r}
 #| code-fold: show
-#| code-summary: "Display/Hide HTML to PDF code"
+#| code-summary: "Display/Hide: HTML to PDF code"
 #| eval: false
 
 #set footer to show page numbers
